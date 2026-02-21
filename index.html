@@ -622,34 +622,41 @@
     font-style: italic;
   }
 
-  /* ── COUNTDOWN ── */
-  .countdown {
+
+  /* ── ATTIRE MOSAIC ── */
+  .photo-mosaic {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 1.5rem;
+  }
+
+  .photo-mosaic-item {
+    aspect-ratio: 1;
+    background: var(--sand);
     display: flex;
-    gap: 2rem;
+    align-items: center;
     justify-content: center;
-    margin: 3rem 0;
+    overflow: hidden;
+    position: relative;
   }
 
-  .cd-unit {
-    text-align: center;
-  }
-
-  .cd-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 3rem;
-    font-weight: 300;
-    color: var(--terracotta);
-    line-height: 1;
-    display: block;
-  }
-
-  .cd-label {
+  .photo-mosaic-item .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e8dcc8 0%, #d4c4a8 50%, #c4b090 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Barlow', sans-serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--light-mid);
-    margin-top: 0.3rem;
+    color: rgba(106, 92, 72, 0.5);
+  }
+
+  @media (max-width: 640px) {
+    .photo-mosaic { grid-template-columns: repeat(3, 1fr); }
   }
 
   /* ── FOOTER ── */
@@ -723,7 +730,7 @@
 <section id="home" class="active">
   <div class="hero-top">
     <h1 class="hero-names fade-in">Susan <em>+</em> Alexandre</h1>
-    <p class="hero-sub fade-in-2">are getting married</p>
+    <p class="hero-sub fade-in-2">are getting married!</p>
     <p class="hero-date fade-in-2">06 · 11 · 26 — 08 · 11 · 26 &nbsp;|&nbsp; Mayakoba, Mexico</p>
   </div>
 
@@ -734,16 +741,10 @@
   <div class="hero-divider"></div>
 
   <div class="hero-message fade-in-4">
-    <p>We are beyond excited to celebrate with you in Mayakoba — a place that feels like pure magic. Nestled between the jungle and the Caribbean Sea, it is the perfect backdrop for a few days of warmth, laughter, and togetherness.</p>
-    <p style="margin-top:1rem;">We hope these days become a chance to slow down, connect with old friends, make new ones, and share in something we will all remember forever.</p>
+    <p>We cannot wait to celebrate with our family and friends in a little slice of paradise. Mayakoba sits quietly between the jungle and the Caribbean Sea — where the air is warm, the pace is slow, and everything feels a little more alive.</p>
+    <p style="margin-top:1rem;">We look forward to a few days of beauty, laughter, and togetherness with our favorite people.</p>
   </div>
-
-  <div class="countdown" id="countdown">
-    <div class="cd-unit"><span class="cd-num" id="cd-days">—</span><span class="cd-label">Days</span></div>
-    <div class="cd-unit"><span class="cd-num" id="cd-hours">—</span><span class="cd-label">Hours</span></div>
-    <div class="cd-unit"><span class="cd-num" id="cd-mins">—</span><span class="cd-label">Minutes</span></div>
-    <div class="cd-unit"><span class="cd-num" id="cd-secs">—</span><span class="cd-label">Seconds</span></div>
-  </div>
+</div>
 
   <p class="hero-initials">S + A</p>
 
@@ -779,7 +780,7 @@
           <div class="agenda-event-time">Evening</div>
           <div>
             <div class="agenda-event-name">Welcome Aperitivo</div>
-            <div class="agenda-event-desc">Join us for drinks, light bites and warm hellos as we kick off the celebration together.</div>
+            <div class="agenda-event-desc">Join us for drinks, light bites and warm hellos during golden hour — the perfect way to kick off the celebratory weekend.</div>
           </div>
         </div>
       </div>
@@ -796,9 +797,9 @@
       </div>
       <div class="agenda-events">
         <div class="agenda-event">
-          <div class="agenda-event-time">Evening</div>
+          <div class="agenda-event-time">Afternoon<br>+ Evening</div>
           <div>
-            <div class="agenda-event-name">Wedding Reception</div>
+            <div class="agenda-event-name">Wedding Day</div>
             <div class="agenda-event-desc">Ceremony, dinner and dancing — the main event.</div>
           </div>
         </div>
@@ -806,7 +807,7 @@
           <div class="agenda-event-time">Late</div>
           <div>
             <div class="agenda-event-name">After Party</div>
-            <div class="agenda-event-desc">Keep the night going with us.</div>
+            <div class="agenda-event-desc">The night is young. Join us to keep it going.</div>
           </div>
         </div>
       </div>
@@ -818,15 +819,15 @@
         <div class="agenda-day-num">08</div>
         <div class="agenda-day-info">
           <div class="agenda-day-name">Sunday · November 8th</div>
-          <div class="agenda-day-title">Farewell Brunch</div>
+          <div class="agenda-day-title">The Wind Down</div>
         </div>
       </div>
       <div class="agenda-events">
         <div class="agenda-event">
           <div class="agenda-event-time">Morning</div>
           <div>
-            <div class="agenda-event-name">Farewell Brunch</div>
-            <div class="agenda-event-desc">One last morning together before we say our goodbyes — we promise it will be worth the early rise.</div>
+            <div class="agenda-event-name">The Wind Down</div>
+            <div class="agenda-event-desc">One last day in the sun. No agenda, no rush — just a little more time together.</div>
           </div>
         </div>
       </div>
@@ -881,20 +882,114 @@
 
     <div class="attire-card">
       <div class="attire-event">Friday · Welcome Aperitivo</div>
-      <div class="attire-code">Smart Casual</div>
-      <div class="attire-desc"><span class="placeholder-note">✦ Dress code details coming soon.</span></div>
+      <div class="attire-code">Cocktail Attire</div>
+      <div class="attire-desc">Sundresses, linen, and button downs with open collars.</div>
+      <div class="photo-mosaic">
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 1</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 2</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 3</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 4</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 5</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 6</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 7</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 8</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 9</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 10</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 11</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 12</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 13</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 14</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 15</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 16</div>
+        </div>
+      </div>
     </div>
 
     <div class="attire-card">
       <div class="attire-event">Saturday · Wedding Reception</div>
-      <div class="attire-code">Black Tie Optional</div>
-      <div class="attire-desc"><span class="placeholder-note">✦ Full dress code guidance coming soon.</span></div>
-    </div>
-
-    <div class="attire-card">
-      <div class="attire-event">Sunday · Farewell Brunch</div>
-      <div class="attire-code">Casual</div>
-      <div class="attire-desc"><span class="placeholder-note">✦ Details to follow.</span></div>
+      <div class="attire-code">Summer Formal</div>
+      <div class="attire-desc">Ankle to floor-length dress, suits. Dressed for the occasion, and the destination.</div>
+      <div class="photo-mosaic">
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 1</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 2</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 3</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 4</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 5</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 6</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 7</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 8</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 9</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 10</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 11</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 12</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 13</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 14</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 15</div>
+        </div>
+        <div class="photo-mosaic-item">
+          <div class="photo-placeholder">Photo 16</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -970,20 +1065,18 @@
         <p style="font-family:'Barlow',sans-serif; font-size:0.78rem; color:var(--light-mid); margin-bottom:1rem; letter-spacing:0.03em;">Check all boxes that apply</p>
         <div class="checkbox-group">
           <label class="checkbox-label">
-            <input type="checkbox"> Attending Welcome Aperitivo (Nov 6th)
+            <input type="checkbox"> Welcome Aperitivo — Friday, Nov 6th
           </label>
           <label class="checkbox-label">
-            <input type="checkbox"> Wedding Reception &amp; After Party (Nov 7th)
+            <input type="checkbox"> Wedding Day — Saturday, Nov 7th
           </label>
           <label class="checkbox-label">
-            <input type="checkbox"> Farewell Brunch (Nov 8th)
+            <input type="checkbox"> The Wind Down — Sunday, Nov 8th
           </label>
           <label class="checkbox-label">
             <input type="checkbox"> Cannot Attend
           </label>
-          <label class="checkbox-label">
-            <input type="checkbox"> Not Sure Yet
-          </label>
+
         </div>
       </div>
 
@@ -1026,24 +1119,6 @@
   function toggleMobileMenu() {
     document.getElementById('mobileMenu').classList.toggle('open');
   }
-
-  // Countdown
-  function updateCountdown() {
-    const target = new Date('2026-11-06T18:00:00');
-    const now = new Date();
-    const diff = target - now;
-    if (diff <= 0) return;
-    const days = Math.floor(diff / (1000*60*60*24));
-    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-    const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
-    const secs = Math.floor((diff % (1000*60)) / 1000);
-    document.getElementById('cd-days').textContent = days;
-    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
-    document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
-    document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
 
   // RSVP submit
   function handleSubmit(e) {
