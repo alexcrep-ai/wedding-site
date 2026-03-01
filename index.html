@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SK + AC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --sand: #FBE8EB;
+    --warm-white: #FBE8EB;
+    --terracotta: #2E9166;
+    --clay: #247a55;
+    --olive: #3DB87A;
+    --dark: #2a2318;
+    --mid: #8a7a7e;
+    --light-mid: #c4b0b5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--warm-white);
+    color: var(--dark);
+    font-family: 'Lora', serif;
+    font-weight: 400;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem 3rem;
+    background: rgba(251, 232, 235, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(196,176,181,0.25);
+  }
+
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--olive); }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--dark);
+    transition: all 0.3s;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--warm-white);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+
+  .mobile-menu.open { display: flex; }
+
+  .mobile-menu a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--dark);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .mobile-menu a:hover { color: var(--olive); }
+
+  .mobile-close {
+    position: absolute;
+    top: 1.5rem; right: 2rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--mid);
+    font-family: 'Barlow', sans-serif;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    display: none;
+    min-height: 100vh;
+    padding: 7rem 2rem 4rem;
+  }
+
+  section.active { display: block; }
+
+  /* ── HOME ── */
+  #home {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0;
+  }
+
+  #home.active { display: flex; }
+
+  .hero-top {
+    width: 100%;
+    padding: 8rem 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-names {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--terracotta);
+    text-transform: uppercase;
+  }
+
+  .hero-names em {
+    font-style: normal;
+    color: var(--terracotta);
+  }
+
+  .hero-sub {
+    margin-top: 0.8rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  .hero-date {
+    margin-top: 0.7rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--mid);
+  }
+
+  .hero-image {
+    width: 100%;
+    max-width: 680px;
+    margin: 2.5rem auto 0;
+    position: relative;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .hero-image-placeholder {
+    width: 100%;
+    height: 520px;
+    background: linear-gradient(135deg, #e8d4d8 0%, #d4b8c0 40%, #c9a8b0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.1em;
+    font-style: italic;
+  }
+
+  .hero-divider {
+    width: 1px;
+    height: 60px;
+    background: var(--olive);
+    margin: 3rem auto 0;
+  }
+
+  .hero-message {
+    max-width: 560px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+  }
+
+  .hero-message p {
+    font-family: 'Lora', serif;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--mid);
+    font-weight: 400;
+  }
+
+  .hero-initials {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin: 1rem 0 2rem;
+  }
+
+  .hero-nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem 2.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .hero-nav-links a {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .hero-nav-links a:hover {
+    color: var(--olive);
+    border-color: var(--olive);
+  }
+
+  /* ── INNER PAGE ── */
+  .page-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--terracotta);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .page-title em { color: var(--terracotta); font-style: normal; }
+
+  .page-subtitle {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 3rem;
+  }
+
+  .divider-line {
+    width: 48px;
+    height: 1px;
+    background: var(--olive);
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  /* ── AGENDA ── */
+  .agenda-day {
+    margin-bottom: 3.5rem;
+  }
+
+  .agenda-day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .agenda-day-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--terracotta);
+    line-height: 1;
+  }
+
+  .agenda-day-info {}
+
+  .agenda-day-name {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .agenda-day-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dark);
+  }
+
+  .agenda-events { border-left: 1px solid rgba(196,176,181,0.4); padding-left: 1.5rem; }
+
+  .agenda-event {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.2rem;
+    align-items: flex-start;
+  }
+
+  .agenda-event-time {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--mid);
+    min-width: 50px;
+    padding-top: 2px;
+  }
+
+  .agenda-event-name {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    color: var(--mid);
+    line-height: 1.4;
+  }
+
+  .agenda-event-desc {
+    font-size: 0.88rem;
+    color: var(--mid);
+    font-family: 'Lora', serif;
+    font-style: italic;
+    margin-top: 0.2rem;
+  }
+
+  /* ── LOGISTICS ── */
+  .logistics-block {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(196,176,181,0.3);
+  }
+
+  .logistics-block:last-child { border-bottom: none; }
+
+  .logistics-label {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.6rem;
+  }
+
+  .logistics-content {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--mid);
+  }
+
+  .placeholder-note {
+    display: inline-block;
+    background: rgba(61, 184, 122, 0.08);
+    border: 1px dashed rgba(61, 184, 122, 0.3);
+    padding: 0.8rem 1.2rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.82rem;
+    color: var(--mid);
+    font-style: italic;
+    border-radius: 2px;
+  }
+
+  /* ── ATTIRE ── */
+  .attire-card {
+    background: rgba(255,255,255,0.5);
+    padding: 2.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+  }
+
+  .attire-event {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.5rem;
+  }
+
+  .attire-code {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .attire-desc {
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  /* ── REGISTRY ── */
+  .registry-intro {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--mid);
+    font-style: italic;
+    margin-bottom: 2.5rem;
+  }
+
+  .registry-btn {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    border: 1px solid var(--terracotta);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    text-decoration: none;
+    transition: all 0.25s;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .registry-btn:hover {
+    background: var(--terracotta);
+    color: white;
+  }
+
+  /* ── RSVP ── */
+  .rsvp-intro {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--mid);
+    margin-bottom: 2.5rem;
+  }
+
+  .rsvp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .form-group {}
+
+  .form-group-title {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.8rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-field label {
+    font-family: 'Lora', serif;
+    font-size: 0.85rem;
+    color: var(--mid);
+    letter-spacing: 0.02em;
+  }
+
+  .form-field input,
+  .form-field textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(196,176,181,0.5);
+    padding: 0.6rem 0;
+    font-family: 'Lora', serif;
+    font-size: 0.9rem;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-field input:focus,
+  .form-field textarea:focus {
+    border-color: var(--olive);
+  }
+
+  .form-field textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    color: var(--mid);
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--light-mid);
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .checkbox-label input[type="checkbox"]:checked {
+    border-color: var(--olive);
+    background: var(--olive);
+  }
+
+  .checkbox-label input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 1px;
+    width: 5px; height: 9px;
+    border: 1px solid white;
+    border-left: none;
+    border-top: none;
+    transform: rotate(45deg);
+  }
+
+  .submit-btn {
+    align-self: flex-start;
+    padding: 1rem 3rem;
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s;
+  }
+
+  .submit-btn:hover { background: var(--clay); }
+
+  .success-msg {
+    display: none;
+    padding: 1.5rem 2rem;
+    background: rgba(61, 184, 122, 0.1);
+    border-left: 2px solid var(--olive);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    color: var(--terracotta);
+    font-style: italic;
+  }
+
+
+  /* ── ATTIRE MOSAIC ── */
+  .photo-mosaic {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 1.5rem;
+  }
+
+  .photo-mosaic-item {
+    aspect-ratio: 1;
+    background: var(--sand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .photo-mosaic-item .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f5dce0 0%, #e8c8ce 50%, #ddb8c0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(138, 122, 126, 0.5);
+  }
+
+  @media (max-width: 640px) {
+    .photo-mosaic { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid rgba(196,176,181,0.3);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    color: var(--mid);
+    font-style: italic;
+  }
+
+  /* ── PASSWORD GATE ── */
+  #password-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: var(--warm-white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+
+  #password-gate.hidden {
+    display: none;
+  }
+
+  .gate-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  .gate-field-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .gate-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(196,176,181,0.5);
+    padding: 0.6rem 0;
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    color: var(--dark);
+    outline: none;
+    width: 220px;
+    text-align: center;
+    letter-spacing: 0.05em;
+    transition: border-color 0.2s;
+  }
+
+  .gate-input:focus {
+    border-color: var(--olive);
+  }
+
+  .gate-input.shake {
+    animation: shake 0.4s ease;
+    border-color: #c0392b;
+  }
+
+  .gate-error {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c0392b;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .gate-error.visible {
+    opacity: 1;
+  }
+
+  .gate-btn {
+    padding: 0.85rem 2.5rem;
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s;
+  }
+
+  .gate-btn:hover {
+    background: var(--clay);
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .fade-in-2 { animation: fadeUp 0.7s ease 0.15s forwards; opacity: 0; }
+  .fade-in-3 { animation: fadeUp 0.7s ease 0.3s forwards; opacity: 0; }
+  .fade-in-4 { animation: fadeUp 0.7s ease 0.45s forwards; opacity: 0; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .form-row { grid-template-columns: 1fr; }
+    section { padding: 6rem 1.5rem 3rem; }
+    .hero-image-placeholder { height: 320px; }
+    .countdown { gap: 1.2rem; }
+    .cd-num { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="password-gate">
+  <div class="gate-logo">SK + AC</div>
+  <div class="gate-field-wrap">
+    <input
+      class="gate-input"
+      type="password"
+      placeholder="password"
+      id="gateInput"
+      onkeydown="if(event.key==='Enter') checkPassword()"
+      autocomplete="off"
+    >
+    <span class="gate-error" id="gateError">Incorrect password</span>
+  </div>
+  <button class="gate-btn" onclick="checkPassword()">Enter</button>
+</div>
+
+<nav>
+  <a href="#" class="nav-logo" onclick="showSection('home'); return false;">SK + AC</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showSection('agenda'); return false;">Agenda</a></li>
+    <li><a href="#" onclick="showSection('logistics'); return false;">Logistics</a></li>
+    <li><a href="#" onclick="showSection('attire'); return false;">Attire</a></li>
+    <li><a href="#" onclick="showSection('registry'); return false;">Registry</a></li>
+    <li><a href="#" onclick="showSection('rsvp'); return false;">RSVP</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="#" onclick="navTo('home')">Home</a>
+  <a href="#" onclick="navTo('agenda')">Agenda</a>
+  <a href="#" onclick="navTo('logistics')">Logistics</a>
+  <a href="#" onclick="navTo('attire')">Attire</a>
+  <a href="#" onclick="navTo('registry')">Registry</a>
+  <a href="#" onclick="navTo('rsvp')">RSVP</a>
+</div>
+
+<!-- HOME -->
+<section id="home" class="active">
+  <div class="hero-top">
+    <h1 class="hero-names fade-in">Susan <em>&</em> Alex</h1>
+    <p class="hero-sub fade-in-2">are getting married</p>
+    <p class="hero-date fade-in-3">November 7, 2026 · The Colony, Palm Beach, FL</p>
+  </div>
+
+  <div class="hero-image fade-in-4">
+    <img src="hero-photo.jpg" alt="Susan and Alex">
+  </div>
+
+  <div class="hero-divider"></div>
+
+  <div class="hero-message">
+    <p>We're so excited to celebrate this milestone with our closest friends and family. Join us for a long weekend of sun, sea, and celebration in Palm Beach.</p>
+  </div>
+
+  <div class="hero-initials">S + A</div>
+
+  <nav class="hero-nav-links">
+    <a href="#" onclick="showSection('agenda'); return false;">Agenda</a>
+    <a href="#" onclick="showSection('logistics'); return false;">Logistics</a>
+    <a href="#" onclick="showSection('attire'); return false;">Attire</a>
+    <a href="#" onclick="showSection('registry'); return false;">Registry</a>
+    <a href="#" onclick="showSection('rsvp'); return false;">RSVP</a>
+  </nav>
+</section>
+
+<!-- AGENDA -->
+<section id="agenda">
+  <div class="page-inner fade-in">
+    <p class="page-subtitle">The celebration</p>
+    <h2 class="page-title">Ag<em>enda</em></h2>
+    <div class="divider-line"></div>
+
+    <div class="agenda-day">
+      <div class="agenda-day-header">
+        <div class="agenda-day-num">06</div>
+        <div class="agenda-day-info">
+          <div class="agenda-day-name">Friday, November 6th</div>
+          <div class="agenda-day-title">Welcome Cocktail</div>
+        </div>
+      </div>
+      <div class="agenda-events">
+        <div class="agenda-event">
+          <div class="agenda-event-time">6:30 PM</div>
+          <div class="agenda-event-details">
+            <div class="agenda-event-name">Welcome Cocktail</div>
+            <div class="agenda-event-desc">An evening of cocktails and light bites to kick off the weekend.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda-day">
+      <div class="agenda-day-header">
+        <div class="agenda-day-num">07</div>
+        <div class="agenda-day-info">
+          <div class="agenda-day-name">Saturday, November 7th</div>
+          <div class="agenda-day-title">Wedding Day</div>
+        </div>
+      </div>
+      <div class="agenda-events">
+        <div class="agenda-event">
+          <div class="agenda-event-time">5:00 PM</div>
+          <div class="agenda-event-details">
+            <div class="agenda-event-name">Ceremony in the Garden</div>
+          </div>
+        </div>
+        <div class="agenda-event">
+          <div class="agenda-event-time">6:00 PM</div>
+          <div class="agenda-event-details">
+            <div class="agenda-event-name">Cocktail Hour on the Lawn</div>
+          </div>
+        </div>
+        <div class="agenda-event">
+          <div class="agenda-event-time">7:00 PM</div>
+          <div class="agenda-event-details">
+            <div class="agenda-event-name">Dinner &amp; Dancing 'til Late</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGISTICS -->
+<section id="logistics">
+  <div class="page-inner fade-in">
+    <p class="page-subtitle">The details</p>
+    <h2 class="page-title">Logis<em>tics</em></h2>
+    <div class="divider-line"></div>
+
+    <div class="logistics-block">
+      <div class="logistics-label">Where to Stay</div>
+      <div class="logistics-content">
+        <span class="placeholder-note">✦ Accommodation details and room block information to follow.</span>
+      </div>
+    </div>
+
+    <div class="logistics-block">
+      <div class="logistics-label">Getting There</div>
+      <div class="logistics-content">
+        <span class="placeholder-note">✦ Flight and arrival details to follow.</span>
+      </div>
+    </div>
+
+    <div class="logistics-block">
+      <div class="logistics-label">Getting Around</div>
+      <div class="logistics-content">
+        <span class="placeholder-note">✦ Transport and shuttle details to follow.</span>
+      </div>
+    </div>
+
+    <div class="logistics-block">
+      <div class="logistics-label">The Venue</div>
+      <div class="logistics-content">
+        The Colony Palm Beach<br>
+        155 Hammon Avenue, Palm Beach, FL 33480
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ATTIRE -->
+<section id="attire">
+  <div class="page-inner fade-in">
+    <p class="page-subtitle">What to wear</p>
+    <h2 class="page-title">At<em>tire</em></h2>
+    <div class="divider-line"></div>
+
+    <div class="attire-card">
+      <div class="attire-event">Friday · Welcome Cocktail</div>
+      <div class="attire-code">Cocktail Attire</div>
+      <div class="attire-desc">Sundresses, linen, and button downs with open collars.</div>
+    </div>
+
+    <div class="attire-card">
+      <div class="attire-event">Saturday · Wedding Day</div>
+      <div class="attire-code">Black Tie</div>
+      <div class="attire-desc">Ankle to floor-length gowns, tuxedos or dark suits.</div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTRY -->
+<section id="registry">
+  <div class="page-inner fade-in">
+    <p class="page-subtitle">Our Wish List</p>
+    <h2 class="page-title">Reg<em>istry</em></h2>
+    <div class="divider-line"></div>
+
+    <p class="registry-intro">Your presence at our celebration is truly the greatest gift. If you'd like to give something, we've put together a small selection of things we'd love.</p>
+
+    <span class="placeholder-note" style="display:block; margin-bottom:2.5rem;">✦ Registry link to be added here.</span>
+
+    <a href="#" class="registry-btn" id="registryBtn">View Registry</a>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section id="rsvp">
+  <div class="page-inner fade-in">
+    <p class="page-subtitle">Let us know</p>
+    <h2 class="page-title">RS<em>VP</em></h2>
+    <div class="divider-line"></div>
+
+    <p class="rsvp-intro">If you already know whether you can make it to Palm Beach, please let us know by filling out the form below. No pressure if you're still figuring it out — this just helps us plan!</p>
+
+    <div class="success-msg" id="successMsg">
+      Thank you so much — we can't wait to celebrate with you. ♡
+    </div>
+
+    <form class="rsvp-form" id="rsvpForm" onsubmit="handleSubmit(event)">
+
+      <div class="form-group">
+        <div class="form-group-title">Your Name</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>First Name <span style="color:var(--terracotta)">*</span></label>
+            <input type="text" required placeholder="First">
+          </div>
+          <div class="form-field">
+            <label>Last Name <span style="color:var(--terracotta)">*</span></label>
+            <input type="text" required placeholder="Last">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-group-title">Your Partner's Name</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>First Name</label>
+            <input type="text" placeholder="First">
+          </div>
+          <div class="form-field">
+            <label>Last Name</label>
+            <input type="text" placeholder="Last">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-group-title">Your Email</div>
+        <div class="form-field">
+          <label>Email Address <span style="color:var(--terracotta)">*</span></label>
+          <input type="email" required placeholder="your@email.com">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-group-title">Attendance</div>
+        <p style="font-family:'Barlow',sans-serif; font-size:0.78rem; color:var(--light-mid); margin-bottom:1rem; letter-spacing:0.03em;">Check all boxes that apply</p>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox"> Welcome Cocktail — Friday, Nov 6th
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox"> Wedding Day — Saturday, Nov 7th
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox"> Cannot Attend
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-group-title">Dietary Restrictions <span style="text-transform:none; font-style:italic; letter-spacing:0; font-family:'Lora',serif; font-size:0.85rem; color:var(--light-mid)">(optional)</span></div>
+        <div class="form-field">
+          <label>Please let us know if you have any dietary restrictions or severe allergies.</label>
+          <textarea placeholder="e.g. vegetarian, gluten-free, nut allergy…"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-group-title">Message <span style="text-transform:none; font-style:italic; letter-spacing:0; font-family:'Lora',serif; font-size:0.85rem; color:var(--light-mid)">(optional)</span></div>
+        <div class="form-field">
+          <label>Please share any additional invited family members' names here, or anything we should know about your arrangements.</label>
+          <textarea placeholder="Your message…"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit RSVP</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  // Password gate
+  (function() {
+    if (localStorage.getItem('sk_ac_auth') === 'true') {
+      document.getElementById('password-gate').classList.add('hidden');
+    }
+  })();
+
+  function checkPassword() {
+    var input = document.getElementById('gateInput');
+    var error = document.getElementById('gateError');
+    if (input.value === 'susan+alexandre') {
+      localStorage.setItem('sk_ac_auth', 'true');
+      document.getElementById('password-gate').classList.add('hidden');
+    } else {
+      input.classList.remove('shake');
+      void input.offsetWidth; // reflow to restart animation
+      input.classList.add('shake');
+      error.classList.add('visible');
+      input.value = '';
+      setTimeout(function() { input.classList.remove('shake'); }, 400);
+    }
+  }
+
+  // Section navigation
+  function showSection(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    const sec = document.getElementById(id);
+    sec.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function navTo(id) {
+    toggleMobileMenu();
+    showSection(id);
+  }
+
+  // Mobile menu
+  function toggleMobileMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // RSVP submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('rsvpForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo(0,0);
+  }
+</script>
+</body>
+</html>
