@@ -841,7 +841,7 @@
   </div>
 
   <div class="hero-image fade-in-4">
-    <img src="hero-photo.jpg" alt="Susan and Alex">
+    <img src="hero-couple.jpg" alt="Susan and Alex">
   </div>
 
   <div class="hero-divider"></div>
@@ -1013,11 +1013,11 @@
         <div class="form-row">
           <div class="form-field">
             <label>First Name <span style="color:var(--terracotta)">*</span></label>
-            <input type="text" required>
+            <input type="text" id="firstName" required>
           </div>
           <div class="form-field">
             <label>Last Name <span style="color:var(--terracotta)">*</span></label>
-            <input type="text" required>
+            <input type="text" id="lastName" required>
           </div>
         </div>
       </div>
@@ -1027,11 +1027,11 @@
         <div class="form-row">
           <div class="form-field">
             <label>First Name</label>
-            <input type="text">
+            <input type="text" id="partnerFirst">
           </div>
           <div class="form-field">
             <label>Last Name</label>
-            <input type="text">
+            <input type="text" id="partnerLast">
           </div>
         </div>
       </div>
@@ -1040,7 +1040,7 @@
         <div class="form-group-title">Your Email</div>
         <div class="form-field">
           <label>Email Address <span style="color:var(--terracotta)">*</span></label>
-          <input type="email" required placeholder="your@email.com">
+          <input type="email" id="email" required placeholder="your@email.com">
         </div>
       </div>
 
@@ -1049,13 +1049,13 @@
         <p style="font-family:'Barlow',sans-serif; font-size:0.78rem; color:var(--light-mid); margin-bottom:1rem; letter-spacing:0.03em;">Check all boxes that apply</p>
         <div class="checkbox-group">
           <label class="checkbox-label">
-            <input type="checkbox"> Welcome Cocktail — Friday, Nov 6th
+            <input type="checkbox" id="welcomeCocktail"> Welcome Cocktail — Friday, Nov 6th
           </label>
           <label class="checkbox-label">
-            <input type="checkbox"> Wedding Day — Saturday, Nov 7th
+            <input type="checkbox" id="weddingDay"> Wedding Day — Saturday, Nov 7th
           </label>
           <label class="checkbox-label">
-            <input type="checkbox"> Cannot Attend
+            <input type="checkbox" id="cannotAttend"> Cannot Attend
           </label>
         </div>
       </div>
@@ -1064,7 +1064,7 @@
         <div class="form-group-title">Dietary Restrictions <span style="text-transform:none; font-style:italic; letter-spacing:0; font-family:'Lora',serif; font-size:0.85rem; color:var(--light-mid)">(optional)</span></div>
         <div class="form-field">
           <label>Please let us know if you have any dietary restrictions or severe allergies.</label>
-          <textarea placeholder="e.g. vegetarian, gluten-free, nut allergy…"></textarea>
+          <textarea id="dietary" placeholder="e.g. vegetarian, gluten-free, nut allergy…"></textarea>
         </div>
       </div>
 
@@ -1072,7 +1072,7 @@
         <div class="form-group-title">Message <span style="text-transform:none; font-style:italic; letter-spacing:0; font-family:'Lora',serif; font-size:0.85rem; color:var(--light-mid)">(optional)</span></div>
         <div class="form-field">
           <label>Please share any additional invited family members' names here, or anything we should know about your arrangements.</label>
-          <textarea placeholder="Your message…"></textarea>
+          <textarea id="message" placeholder="Your message…"></textarea>
         </div>
       </div>
 
@@ -1124,13 +1124,42 @@
   }
 
   // RSVP submit
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHZ7FmgzRxywY2kaqAflJ02jb3a8HqbnQcrY0-WVn9ZTGhpvBO3GByIXQltG78fVGPSQ/exec';
+
   function handleSubmit(e) {
     e.preventDefault();
-    document.getElementById('rsvpForm').style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
-    window.scrollTo(0,0);
+    var btn = document.querySelector('.submit-btn');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    var payload = {
+      first_name:         document.getElementById('firstName').value,
+      last_name:          document.getElementById('lastName').value,
+      partner_first_name: document.getElementById('partnerFirst').value,
+      partner_last_name:  document.getElementById('partnerLast').value,
+      email:              document.getElementById('email').value,
+      welcome_cocktail:   document.getElementById('welcomeCocktail').checked ? 'Yes' : 'No',
+      wedding_day:        document.getElementById('weddingDay').checked ? 'Yes' : 'No',
+      cannot_attend:      document.getElementById('cannotAttend').checked ? 'Yes' : 'No',
+      dietary:            document.getElementById('dietary').value,
+      message:            document.getElementById('message').value
+    };
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    })
+    .then(function() {
+      document.getElementById('rsvpForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+      window.scrollTo(0, 0);
+    })
+    .catch(function() {
+      btn.textContent = 'Submit RSVP';
+      btn.disabled = false;
+      alert('Something went wrong — please try again.');
+    });
   }
 </script>
 </body>
 </html>
-
