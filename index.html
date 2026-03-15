@@ -619,6 +619,146 @@
   }
 
 
+  /* ── HOTEL CARDS ── */
+  .hotel-location-note {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--mid);
+    font-style: italic;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .hotel-card {
+    margin-bottom: 2.2rem;
+    padding-bottom: 2.2rem;
+    border-bottom: 1px solid rgba(196,176,181,0.2);
+  }
+
+  .hotel-card:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .hotel-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--dark);
+    margin-bottom: 0.3rem;
+  }
+
+  .hotel-tag {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.8rem;
+  }
+
+  .hotel-desc {
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--mid);
+    margin-bottom: 1rem;
+  }
+
+  .hotel-booking {
+    font-family: 'Lora', serif;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--mid);
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .hotel-booking strong {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--dark);
+  }
+
+  .hotel-link {
+    display: inline-block;
+    padding: 0.6rem 1.6rem;
+    border: 1px solid var(--terracotta);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+
+  .hotel-link:hover {
+    background: var(--terracotta);
+    color: white;
+  }
+
+  /* ── TRANSPORT ── */
+  .transport-block {
+    margin-bottom: 1.8rem;
+  }
+
+  .transport-block:last-child {
+    margin-bottom: 0;
+  }
+
+  .transport-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .transport-body {
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--mid);
+    margin-bottom: 0.6rem;
+  }
+
+  .taxi-list {
+    list-style: none;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .taxi-list li {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    color: var(--mid);
+  }
+
+  .taxi-list li strong {
+    color: var(--dark);
+    font-weight: 500;
+  }
+
+  .taxi-list a {
+    color: var(--terracotta);
+    text-decoration: none;
+  }
+
+  .taxi-list a:hover {
+    text-decoration: underline;
+  }
+
   /* ── ATTIRE MOSAIC ── */
   .photo-mosaic {
     display: grid;
@@ -873,15 +1013,15 @@
         <div class="agenda-day-num">06</div>
         <div class="agenda-day-info">
           <div class="agenda-day-name">Friday, November 6th</div>
-          <div class="agenda-day-title">Welcome Cocktail</div>
+          <div class="agenda-day-title">Palm Royale Cocktail</div>
         </div>
       </div>
       <div class="agenda-events">
         <div class="agenda-event">
           <div class="agenda-event-time">6:30 PM</div>
           <div class="agenda-event-details">
-            <div class="agenda-event-name">Welcome Cocktail</div>
-            <div class="agenda-event-desc">Join us for drinks, light bites, and warm hellos as we kick off the celebratory weekend!</div>
+            <div class="agenda-event-name">Palm Royale Cocktail</div>
+            <div class="agenda-event-desc">Join us for an elegant evening of cocktails and warm company at Spruzzo, the rooftop of The Ben — set above the West Palm waterfront with sweeping views across the Intracoastal as the sun fades over the water.</div>
           </div>
         </div>
       </div>
@@ -929,21 +1069,71 @@
     <div class="logistics-block">
       <div class="logistics-label">Where to Stay</div>
       <div class="logistics-content">
-        <span class="placeholder-note">✦ Accommodation details and room block information to follow.</span>
+
+        <p class="hotel-location-note">We have room blocks at three hotels. The Colony and The Brazilian Court are both on Palm Beach island, steps from the venue. AKA West Palm is on the mainland — a short drive across the bridge.</p>
+
+        <div class="hotel-card">
+          <div class="hotel-tag">The Venue Hotel · Palm Beach Island</div>
+          <div class="hotel-name">The Colony Palm Beach</div>
+          <p class="hotel-desc">A Palm Beach icon since 1947, The Colony is the backdrop for our wedding. Instantly recognisable for its signature pink façade, playful interiors, and timeless glamour — staying here puts you steps from the ceremony and in the thick of the celebrations.</p>
+          <p class="hotel-booking">To book, use the link below and enter <strong>crepault-knowles</strong> as your booking reference to access the room block rate. Rooms are available on a first-come, first-served basis — we recommend booking early.</p>
+          <a href="https://thecolonypalmbeach.com/" target="_blank" class="hotel-link">Book at The Colony</a>
+        </div>
+
+        <div class="hotel-card">
+          <div class="hotel-tag">10-min walk · Palm Beach Island</div>
+          <div class="hotel-name">The Brazilian Court</div>
+          <p class="hotel-desc">A quietly luxurious retreat with roots in the 1920s, just a ten-minute stroll from The Colony. Set around lush tropical courtyards with the feel of a private Mediterranean villa — all mahogany, marble, and old-world charm, with Café Boulud on-site for exceptional dining.</p>
+          <p class="hotel-booking">To book, use the link below and enter <strong>crepault-knowles</strong> as your booking reference to access the room block rate.</p>
+          <a href="https://www.thebraziliancourt.com/" target="_blank" class="hotel-link">Book at The Brazilian Court</a>
+        </div>
+
+        <div class="hotel-card">
+          <div class="hotel-tag">7-min drive · West Palm Beach (Mainland)</div>
+          <div class="hotel-name">AKA West Palm</div>
+          <p class="hotel-desc">A sleek, modern option in downtown West Palm Beach, about a 7-minute drive to The Colony across the bridge. AKA's spacious suites feel more like a chic apartment than a hotel room — full kitchens, open terraces, and a gorgeous pool deck. A great choice if you prefer a contemporary vibe or are planning a longer stay.</p>
+          <p class="hotel-booking">To book, use the link below and enter <strong>crepault-knowles</strong> as your booking reference to access the room block rate.</p>
+          <a href="https://www.stayaka.com/locations/west-palm-beach" target="_blank" class="hotel-link">Book at AKA West Palm</a>
+        </div>
+
       </div>
     </div>
 
     <div class="logistics-block">
       <div class="logistics-label">Getting There</div>
       <div class="logistics-content">
-        <span class="placeholder-note">✦ Flight and arrival details to follow.</span>
+
+        <div class="transport-block">
+          <div class="transport-heading">Palm Beach International (PBI)</div>
+          <p class="transport-body">The closest and most convenient airport — just a 15-minute drive to the hotels. We'd recommend flying into PBI if you can. Once you land, Uber, Lyft, and taxis are all available from <strong>Level 3 (Departures), outer curb</strong> — follow signs for Ground Transportation.</p>
+        </div>
+
+        <div class="transport-block">
+          <div class="transport-heading">Fort Lauderdale (FLL) &amp; Miami (MIA)</div>
+          <p class="transport-body">Both are viable alternatives if you find better flights. Fort Lauderdale is about an hour's drive north; Miami is roughly 1 hr 15 min to the south. From either airport, Uber and Lyft are your easiest options into Palm Beach.</p>
+        </div>
+
       </div>
     </div>
 
     <div class="logistics-block">
       <div class="logistics-label">Getting Around</div>
       <div class="logistics-content">
-        <span class="placeholder-note">✦ Transport and shuttle details to follow.</span>
+
+        <div class="transport-block">
+          <p class="transport-body">Palm Beach island is wonderfully compact — guests at The Colony or The Brazilian Court can walk between the two hotels and along Worth Avenue with ease. For everything else, Uber and Lyft work reliably throughout the area.</p>
+          <p class="transport-body">If you prefer a local cab, here are a few numbers to keep handy:</p>
+          <ul class="taxi-list">
+            <li><strong>Yellow Cab</strong> — <a href="tel:+15617777777">(561) 777-7777</a></li>
+            <li><strong>East Coast Taxi</strong> — <a href="tel:+15616511111">(561) 651-1111</a></li>
+            <li><strong>West Palm Beach Taxi</strong> — <a href="tel:+15613717171">(561) 371-7171</a></li>
+          </ul>
+        </div>
+
+        <div class="transport-block">
+          <p class="transport-body" style="font-style:italic;">Please note there is no dedicated shuttle service between the hotels and the venue — but with the distances involved, getting around is easy.</p>
+        </div>
+
       </div>
     </div>
 
@@ -966,8 +1156,8 @@
 
     <div class="attire-card">
       <div class="attire-event">Friday · Welcome Cocktail</div>
-      <div class="attire-code">Cocktail Attire</div>
-      <div class="attire-desc">Sundresses, linen, and button downs with open collars.</div>
+      <div class="attire-code">Palm Royale</div>
+      <div class="attire-desc">Inspired by the golden era of Palm Beach — cocktail dresses, bold prints, and a touch of sparkle. Gentlemen: blazer and trousers. Have fun with it.</div>
     </div>
 
     <div class="attire-card">
