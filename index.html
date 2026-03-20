@@ -18,6 +18,7 @@
     --dark: #2a2318;
     --mid: #8a7a7e;
     --light-mid: #c4b0b5;
+    --pink: #D4607A;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,7 +64,7 @@
   .nav-links a {
     font-family: 'Barlow', sans-serif;
     font-size: 0.72rem;
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--mid);
@@ -85,13 +86,17 @@
   .hamburger span {
     display: block;
     width: 24px;
-    height: 1px;
+    height: 1.5px;
     background: var(--dark);
-    transition: all 0.3s;
+    transition: transform 0.35s ease, opacity 0.25s ease;
+    transform-origin: center;
   }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
   .mobile-menu {
-    display: none;
+    display: flex;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background: var(--warm-white);
@@ -100,21 +105,27 @@
     align-items: center;
     justify-content: center;
     gap: 2.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
   }
 
-  .mobile-menu.open { display: flex; }
+  .mobile-menu.open {
+    opacity: 1;
+    pointer-events: all;
+  }
 
   .mobile-menu a {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 2rem;
-    font-weight: 400;
+    font-size: 2.2rem;
+    font-weight: 600;
     letter-spacing: 0.08em;
     color: var(--dark);
     text-decoration: none;
     transition: color 0.2s;
   }
 
-  .mobile-menu a:hover { color: var(--olive); }
+  .mobile-menu a:hover { color: var(--terracotta); }
 
   .mobile-close {
     position: absolute;
@@ -189,17 +200,27 @@
     color: var(--mid);
   }
 
-  .hero-image {
-    width: 100%;
+  .hero-frame {
     max-width: 680px;
     margin: 2.5rem auto 0;
+    padding: 9px;
+    border: 2px solid var(--terracotta);
+    background: var(--warm-white);
+  }
+
+  .hero-image {
+    width: 100%;
     position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 2px var(--terracotta);
   }
 
   .hero-image img {
     width: 100%;
-    height: auto;
+    height: 130%;
+    object-fit: cover;
     display: block;
+    will-change: transform;
   }
 
   .hero-image-placeholder {
@@ -247,30 +268,6 @@
     margin: 1rem 0 2rem;
   }
 
-  .hero-nav-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem 2.5rem;
-    margin-bottom: 4rem;
-  }
-
-  .hero-nav-links a {
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--mid);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    padding-bottom: 2px;
-    transition: color 0.2s, border-color 0.2s;
-  }
-
-  .hero-nav-links a:hover {
-    color: var(--olive);
-    border-color: var(--olive);
-  }
 
   /* ── INNER PAGE ── */
   .page-inner {
@@ -291,19 +288,19 @@
   .page-title em { color: var(--terracotta); font-style: normal; }
 
   .page-subtitle {
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.72rem;
+    font-family: 'Lora', serif;
+    font-size: 0.82rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--mid);
-    margin-bottom: 3rem;
+    margin-bottom: 0.4rem;
   }
 
   .divider-line {
     width: 48px;
     height: 1px;
     background: var(--olive);
-    margin: 1.5rem 0 2.5rem;
+    margin: 1.2rem 0 2.8rem;
   }
 
   /* ── AGENDA ── */
@@ -311,9 +308,25 @@
     margin-bottom: 3.5rem;
   }
 
+  .agenda-banner {
+    width: 100%;
+    padding: 7px;
+    border: 2px solid var(--terracotta);
+    background: var(--warm-white);
+    margin-bottom: 1.8rem;
+  }
+
+  .agenda-banner img {
+    display: block;
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    box-shadow: inset 0 0 0 2px var(--terracotta);
+  }
+
   .agenda-day-header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 1.2rem;
     margin-bottom: 1.5rem;
   }
@@ -329,8 +342,8 @@
   .agenda-day-info {}
 
   .agenda-day-name {
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.72rem;
+    font-family: 'Lora', serif;
+    font-size: 0.82rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--mid);
@@ -355,11 +368,12 @@
   }
 
   .agenda-event-time {
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.68rem;
+    font-family: 'Lora', serif;
+    font-size: 0.82rem;
     letter-spacing: 0.1em;
     color: var(--mid);
-    min-width: 50px;
+    min-width: 65px;
+    white-space: nowrap;
     padding-top: 2px;
   }
 
@@ -371,10 +385,9 @@
   }
 
   .agenda-event-desc {
-    font-size: 0.88rem;
+    font-size: 0.95rem;
     color: var(--mid);
     font-family: 'Lora', serif;
-    font-style: italic;
     margin-top: 0.2rem;
   }
 
@@ -389,11 +402,12 @@
 
   .logistics-label {
     font-family: 'Barlow', sans-serif;
-    font-size: 0.68rem;
-    letter-spacing: 0.22em;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--terracotta);
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.9rem;
   }
 
   .logistics-content {
@@ -425,7 +439,7 @@
 
   .attire-event {
     font-family: 'Barlow', sans-serif;
-    font-size: 0.68rem;
+    font-size: 0.78rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--terracotta);
@@ -451,11 +465,10 @@
 
   /* ── REGISTRY ── */
   .registry-intro {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.1rem;
-    line-height: 1.8;
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    line-height: 1.85;
     color: var(--mid);
-    font-style: italic;
     margin-bottom: 2.5rem;
   }
 
@@ -498,7 +511,8 @@
 
   .form-group-title {
     font-family: 'Barlow', sans-serif;
-    font-size: 0.68rem;
+    font-size: 0.82rem;
+    font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--terracotta);
@@ -519,8 +533,9 @@
 
   .form-field label {
     font-family: 'Lora', serif;
-    font-size: 0.85rem;
-    color: var(--mid);
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--dark);
     letter-spacing: 0.02em;
   }
 
@@ -528,7 +543,7 @@
   .form-field textarea {
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(196,176,181,0.5);
+    border-bottom: 1.5px solid rgba(139,122,126,0.6);
     padding: 0.6rem 0;
     font-family: 'Lora', serif;
     font-size: 0.9rem;
@@ -539,7 +554,7 @@
 
   .form-field input:focus,
   .form-field textarea:focus {
-    border-color: var(--olive);
+    border-color: var(--terracotta);
   }
 
   .form-field textarea {
@@ -621,16 +636,17 @@
 
   /* ── HOTEL CARDS ── */
   .hotel-location-note {
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
     color: var(--mid);
-    font-style: italic;
     margin-bottom: 2rem;
-    line-height: 1.6;
+    line-height: 1.8;
   }
 
   .hotel-card {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
     margin-bottom: 2.2rem;
     padding-bottom: 2.2rem;
     border-bottom: 1px solid rgba(196,176,181,0.2);
@@ -640,6 +656,28 @@
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+  }
+
+  .hotel-photo-frame {
+    flex: 0 0 320px;
+    align-self: stretch;
+    padding: 7px;
+    border: 2px solid var(--terracotta);
+    background: var(--warm-white);
+  }
+
+  .hotel-photo-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    box-shadow: inset 0 0 0 2px var(--terracotta);
+  }
+
+  .hotel-card-content {
+    flex: 1;
+    min-width: 0;
   }
 
   .hotel-name {
@@ -654,7 +692,7 @@
 
   .hotel-tag {
     font-family: 'Barlow', sans-serif;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--terracotta);
@@ -671,17 +709,16 @@
 
   .hotel-booking {
     font-family: 'Lora', serif;
-    font-size: 0.88rem;
-    line-height: 1.7;
+    font-size: 0.95rem;
+    line-height: 1.8;
     color: var(--mid);
-    font-style: italic;
     margin-bottom: 1rem;
   }
 
   .hotel-booking strong {
     font-style: normal;
     font-weight: 500;
-    color: var(--dark);
+    color: var(--mid);
   }
 
   .hotel-link {
@@ -689,7 +726,7 @@
     padding: 0.6rem 1.6rem;
     border: 1px solid var(--terracotta);
     font-family: 'Barlow', sans-serif;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--terracotta);
@@ -739,9 +776,8 @@
   }
 
   .taxi-list li {
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.82rem;
-    letter-spacing: 0.04em;
+    font-family: 'Lora', serif;
+    font-size: 0.9rem;
     color: var(--mid);
   }
 
@@ -902,30 +938,72 @@
     80% { transform: translateX(6px); }
   }
 
+  /* ── CUSTOM SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--warm-white); }
+  ::-webkit-scrollbar-thumb { background: var(--light-mid); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--mid); }
+
+  /* ── SECTION CROSSFADE ── */
+  @keyframes sectionIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  section.entering { animation: sectionIn 0.55s ease forwards; }
+
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .fade-in {
-    animation: fadeUp 0.7s ease forwards;
-  }
-
+  .fade-in   { animation: fadeUp 0.7s ease forwards; }
   .fade-in-2 { animation: fadeUp 0.7s ease 0.15s forwards; opacity: 0; }
-  .fade-in-3 { animation: fadeUp 0.7s ease 0.3s forwards; opacity: 0; }
+  .fade-in-3 { animation: fadeUp 0.7s ease 0.3s  forwards; opacity: 0; }
   .fade-in-4 { animation: fadeUp 0.7s ease 0.45s forwards; opacity: 0; }
+
+  /* ── PARALLAX SUPPORT ── */
+  .page-title,
+  .page-subtitle,
+  .divider-line { will-change: transform; }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
-    nav { padding: 1.2rem 1.5rem; }
+    nav { padding: 1.1rem 1.5rem; }
     .nav-links { display: none; }
     .hamburger { display: flex; }
-    .form-row { grid-template-columns: 1fr; }
-    section { padding: 6rem 1.5rem 3rem; }
+
+    section { padding: 5.5rem 1.4rem 3rem; }
+    .page-inner { max-width: 100%; }
+
+    .hero-names { font-size: clamp(2.8rem, 14vw, 5rem); }
+    .hero-sub { font-size: clamp(0.85rem, 3.5vw, 1.2rem); }
+    .hero-message { padding: 0 0.5rem; }
+    .hero-frame { margin-top: 1.5rem; }
     .hero-image-placeholder { height: 320px; }
-    .countdown { gap: 1.2rem; }
-    .cd-num { font-size: 2.2rem; }
+
+    .page-title { font-size: clamp(2.6rem, 12vw, 4rem); }
+
+    .agenda-day-num { font-size: 2.8rem; }
+    .agenda-day-title { font-size: 1.45rem; }
+    .agenda-events { padding-left: 1rem; }
+
+    .hotel-card { flex-direction: column; gap: 1.2rem; margin-bottom: 1.8rem; }
+    .hotel-photo-frame { flex: none; width: 100%; }
+    .hotel-photo-frame img { height: 200px; }
+    .attire-card { padding: 1.8rem 1.4rem; }
+    .attire-code { font-size: 1.6rem; }
+
+    .form-row { grid-template-columns: 1fr; }
+    .submit-btn { width: 100%; text-align: center; padding: 1rem; }
+
+    .transport-heading { font-size: 0.95rem; }
+    .taxi-list li { font-size: 0.88rem; }
+  }
+
+  @media (max-width: 380px) {
+    .hero-names { font-size: clamp(2.2rem, 14vw, 3.5rem); }
+    section { padding: 5rem 1.2rem 2.5rem; }
   }
 </style>
 </head>
@@ -980,8 +1058,10 @@
     <p class="hero-date fade-in-3">November 7, 2026 · The Colony, Palm Beach, FL</p>
   </div>
 
-  <div class="hero-image fade-in-4">
-    <img src="hero-couple.jpg" alt="Susan and Alex">
+  <div class="hero-frame fade-in-4">
+    <div class="hero-image">
+      <img src="hero-couple.jpg" alt="Susan and Alex">
+    </div>
   </div>
 
   <div class="hero-divider"></div>
@@ -992,13 +1072,6 @@
 
   <div class="hero-initials">S + A</div>
 
-  <nav class="hero-nav-links">
-    <a href="#" onclick="showSection('agenda'); return false;">Agenda</a>
-    <a href="#" onclick="showSection('logistics'); return false;">Logistics</a>
-    <a href="#" onclick="showSection('attire'); return false;">Attire</a>
-    <a href="#" onclick="showSection('registry'); return false;">Registry</a>
-    <a href="#" onclick="showSection('rsvp'); return false;">RSVP</a>
-  </nav>
 </section>
 
 <!-- AGENDA -->
@@ -1009,8 +1082,10 @@
     <div class="divider-line"></div>
 
     <div class="agenda-day">
+      <div class="agenda-banner">
+        <img src="The Ben - West Palm Beach.jpg" alt="The Ben, West Palm Beach" style="object-position: center 90%;">
+      </div>
       <div class="agenda-day-header">
-        <div class="agenda-day-num">06</div>
         <div class="agenda-day-info">
           <div class="agenda-day-name">Friday, November 6th</div>
           <div class="agenda-day-title">Welcome Apertivo</div>
@@ -1027,8 +1102,10 @@
     </div>
 
     <div class="agenda-day">
+      <div class="agenda-banner">
+        <img src="the-colony-our-hotel-banner.jpg" alt="The Colony Palm Beach">
+      </div>
       <div class="agenda-day-header">
-        <div class="agenda-day-num">07</div>
         <div class="agenda-day-info">
           <div class="agenda-day-name">Saturday, November 7th</div>
           <div class="agenda-day-title">Wedding Ceremony &amp; Reception at The Colony Hotel</div>
@@ -1066,25 +1143,42 @@
         <p class="hotel-location-note">We have room blocks at three hotels. The Colony and The Brazilian Court are both located in Palm Beach. AKA West Palm is a short drive across the bridge.</p>
 
         <div class="hotel-card">
-          <div class="hotel-tag">The Venue Hotel · Palm Beach</div>
-          <div class="hotel-name">The Colony Palm Beach</div>
-          <p class="hotel-desc">A Palm Beach icon, The Colony is the backdrop for our wedding. Recognisable for its signature pink façade, iconic interiors, and timeless glamour — The Colony is where our wedding day takes place.</p>
-          <p class="hotel-booking">To book, please call the hotel and reference the <strong>Knowles–Crepault wedding room block</strong> for the room block rate. Rooms are available on a first-come, first-served basis — we recommend booking early.</p>
-          <a href="https://thecolonypalmbeach.com/" target="_blank" class="hotel-link">Visit The Colony</a>
+          <div class="hotel-photo-frame">
+            <img src="the-colony-hotel.jpg" alt="The Colony Palm Beach">
+          </div>
+          <div class="hotel-card-content">
+            <div class="hotel-tag">The Venue Hotel · Palm Beach</div>
+            <div class="hotel-name">The Colony Palm Beach</div>
+            <p class="hotel-desc">A Palm Beach icon, The Colony is the backdrop for our wedding. Recognisable for its signature pink façade, iconic interiors, and timeless glamour — The Colony is where our wedding day takes place.</p>
+            <p class="hotel-booking">To book, please call the hotel and reference the <strong>Knowles–Crepault wedding room block</strong> for the room block rate. Rooms are available on a first-come, first-served basis — we recommend booking early.</p>
+            <a href="https://thecolonypalmbeach.com/" target="_blank" class="hotel-link">Visit The Colony</a>
+          </div>
         </div>
 
         <div class="hotel-card">
-          <div class="hotel-tag">10-min walk · Palm Beach</div>
-          <div class="hotel-name">The Brazilian Court</div>
-          <p class="hotel-desc">The Brazilian Court is a 10-minute walk from The Colony. This hotel option, although not on premises, is also located in Palm Beach and easily accessible. To book, please call the hotel and reference the <strong>Knowles–Crepault wedding room block</strong> for the room block rate. Rooms are available on a first-come, first-served basis — we recommend booking early.</p>
-          <a href="https://www.thebraziliancourt.com/" target="_blank" class="hotel-link">Visit The Brazilian Court</a>
+          <div class="hotel-photo-frame">
+            <img src="brazillian court.jpg" alt="The Brazilian Court">
+          </div>
+          <div class="hotel-card-content">
+            <div class="hotel-tag">10-min walk · Palm Beach</div>
+            <div class="hotel-name">The Brazilian Court</div>
+            <p class="hotel-desc">The Brazilian Court is a 10-minute walk from The Colony. This hotel option, although not on premises, is also located in Palm Beach and easily accessible.</p>
+            <p class="hotel-booking">To book, please call the hotel and reference the <strong>Knowles–Crepault wedding room block</strong> for the room block rate. Rooms are available on a first-come, first-served basis — we recommend booking early.</p>
+            <a href="https://www.thebraziliancourt.com/" target="_blank" class="hotel-link">Visit The Brazilian Court</a>
+          </div>
         </div>
 
         <div class="hotel-card">
-          <div class="hotel-tag">7–10 minute drive to Palm Beach</div>
-          <div class="hotel-name">AKA West Palm</div>
-          <p class="hotel-desc">The AKA provides an option off the island in West Palm Beach. Please refer to the <strong>Knowles–Crepault wedding block</strong> to receive the discounted rate.</p>
-          <a href="https://www.stayaka.com/locations/west-palm-beach" target="_blank" class="hotel-link">Visit AKA West Palm</a>
+          <div class="hotel-photo-frame">
+            <img src="AKA West Palm.jpeg" alt="AKA West Palm">
+          </div>
+          <div class="hotel-card-content">
+            <div class="hotel-tag">7–10 minute drive to Palm Beach</div>
+            <div class="hotel-name">AKA West Palm</div>
+            <p class="hotel-desc">The AKA provides an option off the island in West Palm Beach.</p>
+            <p class="hotel-booking">To book, please refer to the <strong>Knowles–Crepault wedding block</strong> to receive the discounted rate. Rooms are available on a first-come, first-served basis — we recommend booking early.</p>
+            <a href="https://www.stayaka.com/locations/west-palm-beach" target="_blank" class="hotel-link">Visit AKA West Palm</a>
+          </div>
         </div>
 
       </div>
@@ -1122,7 +1216,7 @@
         </div>
 
         <div class="transport-block">
-          <p class="transport-body" style="font-style:italic;">Please note there is no dedicated shuttle service between the hotels and the venue — but with the distances involved, getting around is easy.</p>
+          <p class="transport-body">Please note there is no dedicated shuttle service between the hotels and the venue — but with the distances involved, getting around is easy.</p>
         </div>
 
       </div>
@@ -1160,7 +1254,7 @@
 
     <p class="registry-intro">Your presence at our celebration is truly the greatest gift. If you'd like to give something, we've put together a small selection of things we'd love.</p>
 
-    <span class="placeholder-note" style="display:block; margin-bottom:2.5rem;">✦ Registry link to be added here.</span>
+    <span class="placeholder-note" style="display:block; margin-bottom:2.5rem;">✦ Registry link to be added later.</span>
 
     <a href="#" class="registry-btn" id="registryBtn">View Registry</a>
   </div>
@@ -1253,10 +1347,13 @@
 </section>
 
 <script>
-  // Password gate
+  // Password gate — 48-hour expiry
   (function() {
-    if (localStorage.getItem('sk_ac_auth') === 'true') {
+    var ts = localStorage.getItem('sk_ac_auth');
+    if (ts && (Date.now() - parseInt(ts)) < 48 * 60 * 60 * 1000) {
       document.getElementById('password-gate').classList.add('hidden');
+    } else {
+      localStorage.removeItem('sk_ac_auth');
     }
   })();
 
@@ -1264,7 +1361,7 @@
     var input = document.getElementById('gateInput');
     var error = document.getElementById('gateError');
     if (input.value === 'susan+alexandre') {
-      localStorage.setItem('sk_ac_auth', 'true');
+      localStorage.setItem('sk_ac_auth', Date.now().toString());
       document.getElementById('password-gate').classList.add('hidden');
     } else {
       input.classList.remove('shake');
@@ -1276,11 +1373,20 @@
     }
   }
 
-  // Section navigation
+  // Section navigation with crossfade
   function showSection(id) {
-    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    const sec = document.getElementById(id);
-    sec.classList.add('active');
+    document.querySelectorAll('section').forEach(function(s) {
+      s.classList.remove('active', 'entering');
+      // reset any parallax transforms
+      var t = s.querySelector('.page-title');
+      var sub = s.querySelector('.page-subtitle');
+      var div = s.querySelector('.divider-line');
+      if (t) t.style.transform = '';
+      if (sub) sub.style.transform = '';
+      if (div) div.style.transform = '';
+    });
+    var sec = document.getElementById(id);
+    sec.classList.add('active', 'entering');
     window.scrollTo(0, 0);
   }
 
@@ -1289,10 +1395,50 @@
     showSection(id);
   }
 
-  // Mobile menu
+  // Mobile menu — toggle with hamburger animation
   function toggleMobileMenu() {
-    document.getElementById('mobileMenu').classList.toggle('open');
+    var menu = document.getElementById('mobileMenu');
+    var burger = document.querySelector('.hamburger');
+    menu.classList.toggle('open');
+    burger.classList.toggle('open');
   }
+
+  // Parallax hero image
+  var heroImg = document.querySelector('.hero-image img');
+
+  function getParallaxOffset(scrolled) {
+    if (!heroImg) return 0;
+    var extra = heroImg.offsetHeight - heroImg.parentElement.offsetHeight;
+    var initial = -(extra / 2); // centre the image in the container
+    var moved = initial + scrolled * 0.22;
+    // clamp so image never reveals a gap at top or bottom
+    return Math.max(initial * 2, Math.min(0, moved));
+  }
+
+  function updateParallax() {
+    var scrolled = window.pageYOffset;
+
+    // Hero image parallax
+    if (heroImg && document.getElementById('home').classList.contains('active')) {
+      heroImg.style.transform = 'translateY(' + getParallaxOffset(scrolled) + 'px)';
+    }
+
+    // Section title parallax — title drifts slightly slower than the page
+    var activeSection = document.querySelector('section.active');
+    if (activeSection && activeSection.id !== 'home') {
+      var title  = activeSection.querySelector('.page-title');
+      var sub    = activeSection.querySelector('.page-subtitle');
+      var divEl  = activeSection.querySelector('.divider-line');
+      if (title)  title.style.transform  = 'translateY(' + (scrolled * 0.15)  + 'px)';
+      if (sub)    sub.style.transform    = 'translateY(' + (scrolled * 0.19) + 'px)';
+      if (divEl)  divEl.style.transform  = 'translateY(' + (scrolled * 0.12) + 'px)';
+    }
+  }
+
+  // Set centred starting position immediately
+  if (heroImg) heroImg.style.transform = 'translateY(' + getParallaxOffset(0) + 'px)';
+
+  window.addEventListener('scroll', updateParallax, { passive: true });
 
   // RSVP submit
   var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHZ7FmgzRxywY2kaqAflJ02jb3a8HqbnQcrY0-WVn9ZTGhpvBO3GByIXQltG78fVGPSQ/exec';
