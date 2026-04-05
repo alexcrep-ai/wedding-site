@@ -1270,7 +1270,7 @@
       Thank you so much — we can't wait to celebrate with you. ♡
     </div>
 
-    <p class="rsvp-intro">If you already know whether you can make it, please let us know by filling out the form below. No pressure if you're still figuring it out — this just helps us plan!</p>
+    <p class="rsvp-intro" id="rsvpIntro">If you already know whether you can make it, please let us know by filling out the form below. No pressure if you're still figuring it out — this just helps us plan!</p>
 
     <form class="rsvp-form" id="rsvpForm" onsubmit="handleSubmit(event)">
 
@@ -1461,6 +1461,7 @@
     })
     .then(function() {
       document.getElementById('rsvpForm').style.display = 'none';
+      document.getElementById('rsvpIntro').style.display = 'none';
       document.getElementById('successMsg').style.display = 'block';
       window.scrollTo(0, 0);
     })
