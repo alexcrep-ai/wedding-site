@@ -55,6 +55,10 @@ function doPost(e) {
     }).join('');
   }
 
+  var partnerHtml = (data.partner_first_name || data.partner_last_name)
+    ? '<p style="font-family: Georgia, serif; font-size: 14px; color: #8a7a7e; line-height: 1.7; margin: 16px 0 0 0;"><strong style="color: #2a2318; font-weight: 600;">Attending with:</strong> ' + data.partner_first_name + ' ' + data.partner_last_name + '</p>'
+    : '';
+
   var dietaryHtml = data.dietary
     ? '<p style="font-family: Georgia, serif; font-size: 14px; color: #8a7a7e; line-height: 1.7; margin: 16px 0 0 0;"><strong style="color: #2a2318; font-weight: 600;">Dietary notes:</strong> ' + data.dietary + '</p>'
     : '';
@@ -78,16 +82,8 @@ function doPost(e) {
 '            <tr><td style="padding: 48px 48px 40px;">' +
 '              <table width="100%" cellpadding="0" cellspacing="0">' +
 
-'                <tr><td align="center" style="padding-bottom: 28px;">' +
-'                  <p style="font-family: \'Barlow Condensed\', Arial Narrow, sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: #2E9166; margin: 0;">SK + AC</p>' +
-'                </td></tr>' +
-
-'                <tr><td align="center" style="padding-bottom: 28px;">' +
-'                  <div style="width: 1px; height: 48px; background-color: #3DB87A; margin: 0 auto;"></div>' +
-'                </td></tr>' +
-
 '                <tr><td align="center" style="padding-bottom: 8px;">' +
-'                  <h1 style="font-family: \'Playfair Display\', Georgia, serif; font-size: 36px; font-weight: 800; color: #2E9166; margin: 0; line-height: 1.1;">Susan <em>&amp;</em> Alexandre</h1>' +
+'                  <h1 style="font-family: \'Playfair Display\', Georgia, serif; font-size: 36px; font-weight: 800; color: #2E9166; margin: 0; line-height: 1.1;">Susan <em>&amp;</em> Alexandre\'s Wedding</h1>' +
 '                </td></tr>' +
 
 '                <tr><td align="center" style="padding-bottom: 28px;">' +
@@ -111,6 +107,7 @@ function doPost(e) {
 '                    <tr><td style="padding: 20px 24px; background-color: #f5ede8; border-left: 2px solid #2E9166;">' +
 '                      <p style="font-family: \'Barlow\', Arial, sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #2E9166; margin: 0 0 14px 0;">Your selections</p>' +
                        attendingHtml +
+                       partnerHtml +
                        dietaryHtml +
 '                    </td></tr>' +
 '                  </table>' +
@@ -133,7 +130,7 @@ function doPost(e) {
 '                </td></tr>' +
 
 '                <tr><td align="center">' +
-'                  <p style="font-family: \'Barlow\', Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #c4b0b5; margin: 0;">The Colony Palm Beach &nbsp;&middot;&nbsp; 155 Hammon Avenue, Palm Beach, FL 33480</p>' +
+'                  <p style="font-family: \'Barlow\', Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #c4b0b5; margin: 0;">Full details at &nbsp;<a href="https://knowles-crepault.com" style="color: #2E9166; text-decoration: none;">knowles-crepault.com</a></p>' +
 '                </td></tr>' +
 
 '              </table>' +
