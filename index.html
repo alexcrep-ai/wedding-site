@@ -463,30 +463,59 @@
   }
 
   /* ── REGISTRY ── */
-  .registry-intro {
-    font-family: 'Lora', serif;
-    font-size: 1.05rem;
-    line-height: 1.85;
-    color: var(--mid);
-    margin-bottom: 2.5rem;
+  .registry-card {
+    margin-bottom: 2.2rem;
+    padding-bottom: 2.2rem;
+    border-bottom: 1px solid rgba(196,176,181,0.25);
   }
 
-  .registry-btn {
+  .registry-card:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .registry-tag {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.45rem;
+  }
+
+  .registry-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--dark);
+    margin-bottom: 0.8rem;
+  }
+
+  .registry-desc {
+    font-family: 'Lora', serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--mid);
+    margin-bottom: 1.1rem;
+  }
+
+  .registry-link {
     display: inline-block;
-    padding: 0.9rem 2.5rem;
+    padding: 0.6rem 1.6rem;
     border: 1px solid var(--terracotta);
     font-family: 'Barlow', sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--terracotta);
     text-decoration: none;
     transition: all 0.25s;
-    background: transparent;
-    cursor: pointer;
   }
 
-  .registry-btn:hover {
+  .registry-link:hover {
     background: var(--terracotta);
     color: white;
   }
@@ -1251,11 +1280,24 @@
     <h2 class="page-title">Reg<em>istry</em></h2>
     <div class="divider-line"></div>
 
-    <p class="registry-intro">Your presence at our celebration is truly the greatest gift. If you'd like to give something, we've put together a small selection of things we'd love.</p>
+    <div class="registry-card">
+      <div class="registry-tag">Scranton, PA · Local Shop</div>
+      <div class="registry-name">Over the Moon</div>
+      <p class="registry-desc">We adore Over the Moon, our local shop in Scranton, PA.</p>
+      <a href="https://overthemoon.myshoplocal.com/registry.cfm/55351/Knowles_Crepault/November-07-2026" target="_blank" rel="noopener" class="registry-link">View Registry</a>
+    </div>
 
-    <span class="placeholder-note" style="display:block; margin-bottom:2.5rem;">✦ Registry link to be added later.</span>
+    <div class="registry-card">
+      <div class="registry-tag">Kitchen Essentials &amp; Bedding</div>
+      <div class="registry-name">Zola</div>
+      <a href="https://www.zola.com/wedding/susanalexandre/registry" target="_blank" rel="noopener" class="registry-link">View Registry</a>
+    </div>
 
-    <a href="#" class="registry-btn" id="registryBtn">View Registry</a>
+    <div class="registry-card">
+      <div class="registry-tag">Fine China &amp; Unique Gifts</div>
+      <div class="registry-name">Over the Moon</div>
+      <a href="https://overthemoon.com/apps/registry/knowles-crepault-11b2" target="_blank" rel="noopener" class="registry-link">View Registry</a>
+    </div>
   </div>
 </section>
 
