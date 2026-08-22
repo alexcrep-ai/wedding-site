@@ -661,6 +661,142 @@
     font-style: italic;
   }
 
+  /* ── RSVP LOOKUP GATE ── */
+  .lookup-error {
+    display: none;
+    margin-top: 1.2rem;
+    padding: 1rem 1.4rem;
+    background: rgba(192, 57, 43, 0.06);
+    border-left: 2px solid #c0392b;
+    font-family: 'Lora', serif;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--mid);
+  }
+
+  .lookup-error.visible { display: block; }
+
+  .lookup-error a {
+    color: var(--terracotta);
+  }
+
+  .rsvp-greeting {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--terracotta);
+    margin-bottom: 0.6rem;
+  }
+
+  .rsvp-update-note {
+    font-family: 'Lora', serif;
+    font-size: 0.92rem;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--mid);
+    margin-bottom: 1.8rem;
+  }
+
+  /* ── ADDITIONAL GUEST ROWS ── */
+  .guest-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .guest-title {
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  .guest-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(139,122,126,0.6);
+    padding: 0.4rem 0.15rem;
+    font-family: 'Lora', serif;
+    font-size: 0.92rem;
+    color: var(--dark);
+    outline: none;
+    width: 150px;
+    transition: border-color 0.2s;
+  }
+
+  .guest-input:focus { border-color: var(--terracotta); }
+
+  .guest-input::placeholder {
+    color: var(--light-mid);
+    font-style: italic;
+  }
+
+  /* ── MEAL CHOICE ── */
+  .meal-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1.1rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid rgba(196,176,181,0.2);
+  }
+
+  .meal-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .meal-person-name {
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  .meal-options { display: flex; gap: 1.6rem; }
+
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'Lora', serif;
+    font-size: 0.92rem;
+    color: var(--mid);
+  }
+
+  .radio-label input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--light-mid);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .radio-label input[type="radio"]:checked {
+    border-color: var(--olive);
+  }
+
+  .radio-label input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--olive);
+  }
+
 
   /* ── HOTEL CARDS ── */
   .hotel-location-note {
@@ -1025,6 +1161,10 @@
     .form-row { grid-template-columns: 1fr; }
     .submit-btn { width: 100%; text-align: center; padding: 1rem; }
 
+    .guest-row { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+    .guest-input { width: 100%; }
+    .meal-row { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+
     .transport-heading { font-size: 0.95rem; }
     .taxi-list li { font-size: 0.88rem; }
   }
@@ -1309,40 +1449,39 @@
     <h2 class="page-title">RS<em>VP</em></h2>
     <div class="divider-line"></div>
 
+    <!-- NAME LOOKUP GATE -->
+    <div id="rsvpLookup">
+      <p class="rsvp-intro">Let's find your invitation — enter your name below to get started.</p>
+      <div class="form-row">
+        <div class="form-field">
+          <label>First Name</label>
+          <input type="text" id="lookupFirst" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault(); findInvitation();}">
+        </div>
+        <div class="form-field">
+          <label>Last Name</label>
+          <input type="text" id="lookupLast" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault(); findInvitation();}">
+        </div>
+      </div>
+      <button type="button" class="submit-btn" style="margin-top:1.5rem;" onclick="findInvitation()">Find My Invitation</button>
+      <p class="lookup-error" id="lookupError">
+        We couldn't find an invitation under that name. Please double-check the spelling, or reach out to us directly at <a href="mailto:a.crepault@gmail.com">a.crepault@gmail.com</a> and we'll help sort it out.
+      </p>
+    </div>
+
     <div class="success-msg" id="successMsg">
       Thank you so much — we can't wait to celebrate with you. ♡
     </div>
 
-    <p class="rsvp-intro" id="rsvpIntro">If you already know whether you can make it, please let us know by filling out the form below. No pressure if you're still figuring it out — this just helps us plan!</p>
+    <p class="rsvp-greeting" id="rsvpGreeting" style="display:none;"></p>
+    <p class="rsvp-update-note" id="rsvpUpdateNote" style="display:none;">Looks like someone in your household already submitted an RSVP — we've pre-filled your responses below. Feel free to make changes and resubmit.</p>
 
-    <form class="rsvp-form" id="rsvpForm" onsubmit="handleSubmit(event)">
+    <p class="rsvp-intro" id="rsvpIntro" style="display:none;">If you already know whether you can make it, please let us know by filling out the form below. No pressure if you're still figuring it out — this just helps us plan!</p>
 
-      <div class="form-group">
-        <div class="form-group-title">Your Name</div>
-        <div class="form-row">
-          <div class="form-field">
-            <label>First Name <span style="color:var(--terracotta)">*</span></label>
-            <input type="text" id="firstName" required>
-          </div>
-          <div class="form-field">
-            <label>Last Name <span style="color:var(--terracotta)">*</span></label>
-            <input type="text" id="lastName" required>
-          </div>
-        </div>
-      </div>
+    <form class="rsvp-form" id="rsvpForm" style="display:none;" onsubmit="handleSubmit(event)">
 
-      <div class="form-group">
-        <div class="form-group-title">Your Partner's Name</div>
-        <div class="form-row">
-          <div class="form-field">
-            <label>First Name</label>
-            <input type="text" id="partnerFirst">
-          </div>
-          <div class="form-field">
-            <label>Last Name</label>
-            <input type="text" id="partnerLast">
-          </div>
-        </div>
+      <div class="form-group" id="additionalGuestsGroup" style="display:none;">
+        <div class="form-group-title">Your Guests</div>
+        <div id="additionalGuestsContainer"></div>
       </div>
 
       <div class="form-group">
@@ -1367,6 +1506,12 @@
             <input type="checkbox" id="cannotAttend"> Cannot Attend
           </label>
         </div>
+      </div>
+
+      <div class="form-group" id="mealGroup" style="display:none;">
+        <div class="form-group-title">Saturday Night Dinner</div>
+        <p style="font-family:'Barlow',sans-serif; font-size:0.78rem; color:var(--light-mid); margin-bottom:1rem; letter-spacing:0.03em;">Please select a meal for each guest attending Saturday</p>
+        <div id="mealContainer"></div>
       </div>
 
       <div class="form-group">
@@ -1476,26 +1621,311 @@
 
   window.addEventListener('scroll', updateParallax, { passive: true });
 
-  // RSVP submit
+  // ── RSVP: guest list ──────────────────────────
   var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJlF-571VGsZsBRwmFQP_KWq3VFlIPvDrfCL-XcokQtL9PHCn_HZI_LLJXWletI9Us_Q/exec';
 
+  var GUEST_LIST = [
+    {"id":"crepault-2","max":2,"members":[{"t":"Ms.","f":"Madeleine","l":"Crépault"},{"t":"Mr.","f":"Roger","l":"Noreau"}]},
+    {"id":"crepault-1","max":2,"members":[{"t":"Mrs.","f":"Julie","l":"Crépault"},{"t":"Mr.","f":"Peter","l":"Grover"}]},
+    {"id":"grover-1","max":1,"members":[{"t":"Mr.","f":"Marco","l":"Grover"}]},
+    {"id":"grover-2","max":2,"members":[{"t":"Mr.","f":"Mathieu","l":"Grover"},{"t":"Mrs.","f":"Lisa Marie","l":"Landry"}]},
+    {"id":"grover-3","max":1,"members":[{"t":"Mr.","f":"Martin","l":"Grover"}]},
+    {"id":"crepault-3","max":1,"members":[{"t":"Ms.","f":"Diane","l":"Crépault"}]},
+    {"id":"huxham-1","max":2,"members":[{"t":"Ms.","f":"Alexandre","l":"Huxham"},{"t":"Mr.","f":"Michael","l":"Bellows"}]},
+    {"id":"huxham-2","max":2,"members":[{"t":"Mr.","f":"James","l":"Huxham"},{"t":"Mrs.","f":"Sophie","l":"Duchenes"}]},
+    {"id":"huxham-3","max":2,"members":[{"t":"Mr.","f":"David","l":"Huxham"},{"t":"Ms.","f":"Taylor","l":"Lafave"}]},
+    {"id":"baker-1","max":4,"members":[{"t":"Mr.","f":"Cameron","l":"Baker"},{"t":"Mrs.","f":"Nicole","l":"Crépault"},{"t":"","f":"Ryan","l":"Baker"},{"t":"","f":"Rachel","l":"Baker"}]},
+    {"id":"coviensky-1","max":2,"members":[{"t":"Mr.","f":"Adam","l":"Coviensky"},{"t":"Mrs.","f":"Oriana I.","l":"Fuentes"}]},
+    {"id":"angelini-1","max":2,"members":[{"t":"Mr.","f":"Alex","l":"Angelini"},{"t":"Ms.","f":"Daria","l":"Kameneva"}]},
+    {"id":"jamieson-1","max":2,"members":[{"t":"Mr.","f":"Andrew","l":"Jamieson"},{"t":"Mrs.","f":"Laurence","l":"Payette"}]},
+    {"id":"bertrand-1","max":2,"members":[{"t":"Mr.","f":"Mathieu","l":"Bertrand"},{"t":"Mrs.","f":"Catherine","l":"Powell"}]},
+    {"id":"choquette-1","max":2,"members":[{"t":"Mr.","f":"Erik","l":"Choquette"},{"t":"Mrs.","f":"Jenna","l":"Robinson"}]},
+    {"id":"weibel-1","max":2,"members":[{"t":"Mr.","f":"Florian","l":"Weibel"},{"t":"Mrs.","f":"Bianca","l":"Desree"}]},
+    {"id":"doyon-1","max":1,"members":[{"t":"Mr.","f":"Max","l":"Doyon"}]},
+    {"id":"leblanc-1","max":2,"members":[{"t":"Mr.","f":"Mike","l":"Leblanc"},{"t":"Mrs.","f":"Gabby","l":"Fangor"}]},
+    {"id":"grenier-1","max":2,"members":[{"t":"Mr.","f":"Nicolas","l":"Grenier"},{"t":"Ms.","f":"Geneviève","l":"Chartrand"}]},
+    {"id":"ness-1","max":2,"members":[{"t":"Mr.","f":"Tyle","l":"Ness"},{"t":"Ms.","f":"Jackie","l":"Pearsall"}]},
+    {"id":"desai-1","max":2,"members":[{"t":"Mr.","f":"Vinay","l":"Desai"},{"t":"Mrs.","f":"Tanya","l":"Nakhoul"}]},
+    {"id":"hill-1","max":2,"members":[{"t":"Mr.","f":"Joel","l":"Hill"},{"t":"Mr.","f":"Robert","l":"Lytle"}]},
+    {"id":"slater-1","max":2,"members":[{"t":"Mr.","f":"Andrew","l":"Slater"},{"t":"Mrs.","f":"Blaine","l":"Slater"}]},
+    {"id":"richardson-1","max":2,"members":[{"t":"Mr.","f":"Colby","l":"Richardson"},{"t":"Ms.","f":"Rebecca","l":"Murday"}]},
+    {"id":"shannon-1","max":2,"members":[{"t":"Mr.","f":"James","l":"Shannon"},{"t":"Ms.","f":"Olivia","l":"Salmond"}]},
+    {"id":"mcarthur-1","max":2,"members":[{"t":"Mr.","f":"Jamison","l":"McArthur"},{"t":"Ms.","f":"Scarlett","l":"Stutznaecker"}]},
+    {"id":"parker-1","max":1,"members":[{"t":"Mr.","f":"Maxim","l":"Parker"}]},
+    {"id":"flynn-1","max":2,"members":[{"t":"Mr.","f":"Breandan","l":"Flynn"},{"t":"Mrs.","f":"Alyssa","l":"Adams"}]},
+    {"id":"ahmed-1","max":1,"members":[{"t":"Mr.","f":"Lukky","l":"Ahmed"}]},
+    {"id":"schwegler-1","max":2,"members":[{"t":"Mr.","f":"Erik","l":"Schwegler"},{"t":"Mrs.","f":"Victoria","l":"Leeder"}]},
+    {"id":"doyle-1","max":2,"members":[{"t":"Mrs.","f":"Shelbie","l":"Doyle"},{"t":"Mr.","f":"Michael","l":"Rafael"}]},
+    {"id":"paquin-1","max":2,"members":[{"t":"Mrs.","f":"Britanny","l":"Paquin"},{"t":"Mr.","f":"Jesse","l":"Riviere"}]},
+    {"id":"rose-1","max":1,"members":[{"t":"Ms.","f":"Emile","l":"Rose"}]},
+    {"id":"roulet-1","max":1,"members":[{"t":"Ms.","f":"Meagan","l":"Roulet"}]},
+    {"id":"knowles-1","max":2,"members":[{"t":"Mr.","f":"Robert","l":"Knowles"},{"t":"Mrs.","f":"Michele","l":"Knowles"}]},
+    {"id":"knowles-2","max":2,"members":[{"t":"Mr.","f":"John","l":"Knowles"},{"t":"Mrs.","f":"Sara","l":"Knowles"}]},
+    {"id":"knowles-3","max":2,"members":[{"t":"Mr.","f":"Matthew","l":"Knowles"},{"t":"Mrs.","f":"Olivia","l":"Knowles"}]},
+    {"id":"collins-1","max":3,"members":[{"t":"Mr.","f":"Christopher","l":"Collins"},{"t":"Mrs.","f":"Leslie","l":"Collins"},{"t":"Ms.","f":"Nora","l":"Collins"}]},
+    {"id":"debacker-1","max":2,"members":[{"t":"Mr.","f":"Marc","l":"DeBacker"},{"t":"Mrs.","f":"Sarah","l":"DeBacker"}]},
+    {"id":"cognetti-1","max":2,"members":[{"t":"Dr.","f":"Peter","l":"Cognetti"},{"t":"Dr.","f":"Katherine","l":"Cognetti"}]},
+    {"id":"abresch-1","max":2,"members":[{"t":"Mr.","f":"Adam","l":"Abresch"},{"t":"Mrs.","f":"Caroline","l":"Abresch"}]},
+    {"id":"walker-1","max":2,"members":[{"t":"Mr.","f":"Lucas","l":"Walker"},{"t":"Mrs.","f":"Anne","l":"Walker"}]},
+    {"id":"cognetti-2","max":2,"members":[{"t":"Mr.","f":"William","l":"Cognetti"},{"t":"Mrs.","f":"Molly","l":"Cognetti"}]},
+    {"id":"comerford-1","max":1,"members":[{"t":"Ms.","f":"Judy","l":"Comerford"}]},
+    {"id":"malhotra-1","max":2,"members":[{"t":"Mr.","f":"Paranjay","l":"Malhotra"},{"t":"Mrs.","f":"Caroline","l":"Malhotra"}]},
+    {"id":"vayas-1","max":2,"members":[{"t":"Mr.","f":"Antonio","l":"Vayas"},{"t":"Mrs.","f":"Kathleen","l":"Vayas"}]},
+    {"id":"comerford-2","max":2,"members":[{"t":"Mr.","f":"John","l":"Comerford"},{"t":"Ms.","f":"Amanda","l":"Colombo"}]},
+    {"id":"comerford-3","max":2,"members":[{"t":"Ms.","f":"Mary","l":"Comerford"},{"t":"Mr.","f":"Colin","l":"Curran"}]},
+    {"id":"gibbons-1","max":2,"members":[{"t":"Mr.","f":"Douglas","l":"Gibbons"},{"t":"Mrs.","f":"Megan","l":"Gibbons"}]},
+    {"id":"cooper-1","max":2,"members":[{"t":"Mr.","f":"Malcolm","l":"Cooper"},{"t":"Mrs.","f":"Elizabeth","l":"Cooper"}]},
+    {"id":"gibbons-2","max":1,"members":[{"t":"Mrs.","f":"Mary Ellen","l":"Gibbons"}]},
+    {"id":"labelle-1","max":2,"members":[{"t":"Mr.","f":"Paul J.","l":"LaBelle"},{"t":"Mr.","f":"James","l":"LaBelle"}]},
+    {"id":"jordan-1","max":2,"members":[{"t":"Dr.","f":"Thomas","l":"Jordan"},{"t":"Mrs.","f":"Caroline","l":"Jordan"}]},
+    {"id":"burke-1","max":2,"members":[{"t":"Mr.","f":"Joseph","l":"Burke"},{"t":"Mrs.","f":"Kathleen","l":"Burke"}]},
+    {"id":"davis-1","max":2,"members":[{"t":"Mr.","f":"Christian","l":"Davis"},{"t":"Mrs.","f":"Beth","l":"Davis"}]},
+    {"id":"burkejr-1","max":2,"members":[{"t":"Mr.","f":"Joseph","l":"Burke Jr."},{"t":"Mrs.","f":"Rachel","l":"Burke Jr."}]},
+    {"id":"burke-2","max":2,"members":[{"t":"Mr.","f":"Michael","l":"Burke"},{"t":"Mrs.","f":"Krista","l":"Burke"}]},
+    {"id":"mackarey-1","max":2,"members":[{"t":"Dr.","f":"Paul","l":"Mackarey"},{"t":"Dr.","f":"Esther","l":"Mackarey"}]},
+    {"id":"mcgregor-1","max":2,"members":[{"t":"Mr.","f":"Robert","l":"McGregor"},{"t":"Mrs.","f":"Virginia","l":"McGregor"}]},
+    {"id":"doherty-1","max":2,"members":[{"t":"Mr.","f":"Christopher","l":"Doherty"},{"t":"Mrs.","f":"Donna","l":"Doherty"}]},
+    {"id":"gavin-1","max":1,"members":[{"t":"Ms.","f":"Mara","l":"Gavin"}]},
+    {"id":"karam-1","max":2,"members":[{"t":"Mr.","f":"Thomas","l":"Karam"},{"t":"Mrs.","f":"Flora","l":"Karam"}]},
+    {"id":"spear-1","max":2,"members":[{"t":"Dr.","f":"Michael","l":"Spear"},{"t":"Mrs.","f":"Mary","l":"Spear"}]},
+    {"id":"coco-1","max":2,"members":[{"t":"Mr.","f":"Frank","l":"Coco"},{"t":"Mrs.","f":"Denise","l":"Coco"}]},
+    {"id":"farrell-1","max":1,"members":[{"t":"Ms.","f":"Catherine","l":"Farrell"}]},
+    {"id":"browman-1","max":2,"members":[{"t":"Mr.","f":"Douglas","l":"Browman"},{"t":"Mrs.","f":"Leilani","l":"Browman"}]},
+    {"id":"hoffman-1","max":1,"members":[{"t":"Ms.","f":"Madeleine","l":"Hoffman"}]},
+    {"id":"johnson-1","max":2,"members":[{"t":"Mr.","f":"Noah","l":"Johnson"},{"t":"Mrs.","f":"Stephanie","l":"Johnson"}]},
+    {"id":"kane-1","max":1,"members":[{"t":"Ms.","f":"Lucie","l":"Kane"}]},
+    {"id":"barberio-1","max":1,"members":[{"t":"Ms.","f":"Dina","l":"Barberio"}]},
+    {"id":"verrastro-1","max":1,"members":[{"t":"Ms.","f":"Victoria","l":"Verrastro"}]},
+    {"id":"walsh-1","max":2,"members":[{"t":"Mr.","f":"Terence","l":"Walsh"},{"t":"Mrs.","f":"Kendra","l":"Walsh"}]},
+    {"id":"pescuma-1","max":1,"members":[{"t":"Mr.","f":"Michael","l":"Pescuma"}]},
+    {"id":"farrell-2","max":2,"members":[{"t":"Mr.","f":"Michael","l":"Farrell"},{"t":"Mrs.","f":"Lynn","l":"Farrell"}]},
+    {"id":"hinton-1","max":2,"members":[{"t":"Mr.","f":"Timothy","l":"Hinton"},{"t":"Mrs.","f":"Terri","l":"Hinton"}]},
+    {"id":"hogan-1","max":2,"members":[{"t":"Mrs.","f":"Joseph","l":"Hogan"},{"t":"Mrs.","f":"","l":"Hogan"}]},
+    {"id":"karam-2","max":1,"members":[{"t":"Ms.","f":"Elizabeth","l":"Karam"}]},
+    {"id":"knowles-4","max":1,"members":[{"t":"Ms.","f":"Kathleen","l":"Knowles"}]},
+    {"id":"cicotti-1","max":1,"members":[{"t":"Ms.","f":"Jennifer","l":"Cicotti"}]},
+    {"id":"mccloat-1","max":2,"members":[{"t":"Ms.","f":"Meghan","l":"McCloat"},{"t":"Mr.","f":"Silvestro","l":"Accettullo"}]},
+    {"id":"lallemand-1","max":2,"members":[{"t":"Mrs.","f":"Sarah","l":"Lallemand"},{"t":"Mr.","f":"Benjamin","l":"Summers"}]}
+  ];
+
+  function normalizeName(s) {
+    return (s || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .replace(/\s+/g, ' ')
+      .toLowerCase();
+  }
+
+  var NAME_INDEX = {};
+  GUEST_LIST.forEach(function(hh, hIdx) {
+    hh.members.forEach(function(m, mIdx) {
+      var key = normalizeName(m.f + ' ' + m.l);
+      NAME_INDEX[key] = { h: hIdx, m: mIdx };
+    });
+  });
+
+  function escapeHtml(s) {
+    var div = document.createElement('div');
+    div.textContent = s || '';
+    return div.innerHTML;
+  }
+
+  // ── RSVP: state ────────────────────────────────
+  var currentHousehold = null;
+  var currentSelfIndex = null;
+
+  function findInvitation() {
+    var first = document.getElementById('lookupFirst').value;
+    var last = document.getElementById('lookupLast').value;
+    var key = normalizeName(first + ' ' + last);
+    var match = NAME_INDEX[key];
+    var errorEl = document.getElementById('lookupError');
+
+    if (!match) {
+      errorEl.classList.add('visible');
+      return;
+    }
+    errorEl.classList.remove('visible');
+
+    currentHousehold = GUEST_LIST[match.h];
+    currentSelfIndex = match.m;
+    onHouseholdMatched();
+  }
+
+  function onHouseholdMatched() {
+    var self = currentHousehold.members[currentSelfIndex];
+
+    document.getElementById('rsvpLookup').style.display = 'none';
+
+    var greeting = document.getElementById('rsvpGreeting');
+    greeting.textContent = 'Welcome, ' + [self.t, self.f, self.l].filter(Boolean).join(' ');
+    greeting.style.display = 'block';
+
+    renderAdditionalGuests();
+    setupMealVisibility();
+    renderMealRows();
+
+    document.getElementById('rsvpIntro').style.display = 'block';
+    document.getElementById('rsvpForm').style.display = 'flex';
+
+    checkHouseholdStatus(currentHousehold.id);
+  }
+
+  function renderAdditionalGuests() {
+    var container = document.getElementById('additionalGuestsContainer');
+    container.innerHTML = '';
+
+    var others = currentHousehold.members.filter(function(m, i) { return i !== currentSelfIndex; });
+    var totalSlots = currentHousehold.max - 1;
+
+    for (var i = 0; i < totalSlots; i++) {
+      var person = others[i] || { t: '', f: '', l: '' };
+      var slotNum = i + 2;
+      var row = document.createElement('div');
+      row.className = 'guest-row';
+      row.innerHTML =
+        '<span class="guest-title" id="gTitle' + slotNum + '">' + escapeHtml(person.t) + '</span>' +
+        '<input type="text" class="guest-input" id="gFirst' + slotNum + '" placeholder="First Name" value="' + escapeHtml(person.f) + '" oninput="updateMealLabel(' + slotNum + ')">' +
+        '<input type="text" class="guest-input" id="gLast' + slotNum + '" placeholder="Last Name" value="' + escapeHtml(person.l) + '" oninput="updateMealLabel(' + slotNum + ')">';
+      container.appendChild(row);
+    }
+
+    document.getElementById('additionalGuestsGroup').style.display = totalSlots > 0 ? 'block' : 'none';
+  }
+
+  function setupMealVisibility() {
+    var weddingDay = document.getElementById('weddingDay');
+    weddingDay.onchange = function() {
+      document.getElementById('mealGroup').style.display = this.checked ? 'block' : 'none';
+    };
+  }
+
+  function personLabel(t, f, l, fallback) {
+    var name = [t, f, l].filter(Boolean).join(' ').trim();
+    return name || fallback;
+  }
+
+  function buildMealRow(key, label) {
+    var div = document.createElement('div');
+    div.className = 'meal-row';
+    div.innerHTML =
+      '<div class="meal-person-name" id="mealName_' + key + '">' + escapeHtml(label) + '</div>' +
+      '<div class="meal-options">' +
+        '<label class="radio-label"><input type="radio" name="meal_' + key + '" value="Fish"> Fish</label>' +
+        '<label class="radio-label"><input type="radio" name="meal_' + key + '" value="Meat"> Meat</label>' +
+      '</div>';
+    return div;
+  }
+
+  function renderMealRows() {
+    var container = document.getElementById('mealContainer');
+    container.innerHTML = '';
+
+    var self = currentHousehold.members[currentSelfIndex];
+    container.appendChild(buildMealRow('self', personLabel(self.t, self.f, self.l, 'You')));
+
+    var totalSlots = currentHousehold.max - 1;
+    for (var i = 0; i < totalSlots; i++) {
+      var slotNum = i + 2;
+      var titleEl = document.getElementById('gTitle' + slotNum);
+      var firstEl = document.getElementById('gFirst' + slotNum);
+      var lastEl = document.getElementById('gLast' + slotNum);
+      var label = personLabel(titleEl.textContent, firstEl.value, lastEl.value, 'Guest ' + slotNum);
+      container.appendChild(buildMealRow('g' + slotNum, label));
+    }
+  }
+
+  function updateMealLabel(slotNum) {
+    var labelEl = document.getElementById('mealName_g' + slotNum);
+    if (!labelEl) return;
+    var titleEl = document.getElementById('gTitle' + slotNum);
+    var firstEl = document.getElementById('gFirst' + slotNum);
+    var lastEl = document.getElementById('gLast' + slotNum);
+    labelEl.textContent = personLabel(titleEl.textContent, firstEl.value, lastEl.value, 'Guest ' + slotNum);
+  }
+
+  function setMealRadio(key, value) {
+    if (!value) return;
+    var el = document.querySelector('input[name="meal_' + key + '"][value="' + value + '"]');
+    if (el) el.checked = true;
+  }
+
+  // ── RSVP: live household lookup (JSONP) ────────
+  function checkHouseholdStatus(householdId) {
+    var callbackName = 'hhCallback_' + Date.now();
+    var script = document.createElement('script');
+
+    window[callbackName] = function(data) {
+      delete window[callbackName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      if (data) {
+        applyPreviousSubmission(data);
+        document.getElementById('rsvpUpdateNote').style.display = 'block';
+      }
+    };
+
+    script.onerror = function() {
+      delete window[callbackName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
+
+    script.src = SCRIPT_URL + '?householdId=' + encodeURIComponent(householdId) + '&callback=' + callbackName;
+    document.body.appendChild(script);
+  }
+
+  function applyPreviousSubmission(data) {
+    if (data.email) document.getElementById('email').value = data.email;
+    document.getElementById('welcomeCocktail').checked = data.welcome_cocktail === 'Yes';
+    document.getElementById('weddingDay').checked = data.wedding_day === 'Yes';
+    document.getElementById('cannotAttend').checked = data.cannot_attend === 'Yes';
+    document.getElementById('dietary').value = data.dietary || '';
+
+    for (var i = 2; i <= currentHousehold.max; i++) {
+      if (data['g' + i + '_first']) document.getElementById('gFirst' + i).value = data['g' + i + '_first'];
+      if (data['g' + i + '_last']) document.getElementById('gLast' + i).value = data['g' + i + '_last'];
+      updateMealLabel(i);
+    }
+
+    setMealRadio('self', data.meal_self);
+    for (var j = 2; j <= currentHousehold.max; j++) {
+      setMealRadio('g' + j, data['meal_g' + j]);
+    }
+
+    document.getElementById('mealGroup').style.display = document.getElementById('weddingDay').checked ? 'block' : 'none';
+  }
+
+  function getMealValue(key) {
+    var el = document.querySelector('input[name="meal_' + key + '"]:checked');
+    return el ? el.value : '';
+  }
+
+  // ── RSVP: submit ────────────────────────────────
   function handleSubmit(e) {
     e.preventDefault();
     var btn = document.querySelector('.submit-btn');
     btn.textContent = 'Sending…';
     btn.disabled = true;
 
+    var self = currentHousehold.members[currentSelfIndex];
     var payload = {
-      first_name:         document.getElementById('firstName').value,
-      last_name:          document.getElementById('lastName').value,
-      partner_first_name: document.getElementById('partnerFirst').value,
-      partner_last_name:  document.getElementById('partnerLast').value,
+      household_id:      currentHousehold.id,
+      title:              self.t,
+      first_name:         self.f,
+      last_name:          self.l,
       email:              document.getElementById('email').value,
       welcome_cocktail:   document.getElementById('welcomeCocktail').checked ? 'Yes' : 'No',
       wedding_day:        document.getElementById('weddingDay').checked ? 'Yes' : 'No',
       cannot_attend:      document.getElementById('cannotAttend').checked ? 'Yes' : 'No',
-      dietary:            document.getElementById('dietary').value
+      dietary:            document.getElementById('dietary').value,
+      meal_self:          getMealValue('self')
     };
+
+    for (var i = 2; i <= currentHousehold.max; i++) {
+      payload['g' + i + '_title'] = document.getElementById('gTitle' + i).textContent;
+      payload['g' + i + '_first'] = document.getElementById('gFirst' + i).value;
+      payload['g' + i + '_last']  = document.getElementById('gLast' + i).value;
+      payload['meal_g' + i]       = getMealValue('g' + i);
+    }
 
     fetch(SCRIPT_URL, {
       method: 'POST',
@@ -1505,6 +1935,8 @@
     .then(function() {
       document.getElementById('rsvpForm').style.display = 'none';
       document.getElementById('rsvpIntro').style.display = 'none';
+      document.getElementById('rsvpGreeting').style.display = 'none';
+      document.getElementById('rsvpUpdateNote').style.display = 'none';
       document.getElementById('successMsg').style.display = 'block';
       window.scrollTo(0, 0);
     })

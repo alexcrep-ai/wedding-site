@@ -6,48 +6,130 @@
 var SPREADSHEET_ID = '1oyAJ_UZHmtK3QmVRj5AgZA0JSEzHpv4s7umcgRHGSk8';
 var SHEET_NAME = 'RSVPs';
 
-function doPost(e) {
+var HEADERS = [
+  'Timestamp', 'Household ID', 'Title', 'First Name', 'Last Name', 'Email',
+  'Welcome Aperitivo (Fri Nov 6)', 'Wedding Day (Sat Nov 7)', 'Cannot Attend', 'Self Meal',
+  'Guest 2 Title', 'Guest 2 First Name', 'Guest 2 Last Name', 'Guest 2 Meal',
+  'Guest 3 Title', 'Guest 3 First Name', 'Guest 3 Last Name', 'Guest 3 Meal',
+  'Guest 4 Title', 'Guest 4 First Name', 'Guest 4 Last Name', 'Guest 4 Meal',
+  'Dietary Restrictions'
+];
+
+// Maps sheet header -> key used in the JSON sent to/read by the website.
+var FIELD_MAP = {
+  'Household ID': 'household_id',
+  'Title': 'title',
+  'First Name': 'first_name',
+  'Last Name': 'last_name',
+  'Email': 'email',
+  'Welcome Aperitivo (Fri Nov 6)': 'welcome_cocktail',
+  'Wedding Day (Sat Nov 7)': 'wedding_day',
+  'Cannot Attend': 'cannot_attend',
+  'Self Meal': 'meal_self',
+  'Guest 2 Title': 'g2_title', 'Guest 2 First Name': 'g2_first', 'Guest 2 Last Name': 'g2_last', 'Guest 2 Meal': 'meal_g2',
+  'Guest 3 Title': 'g3_title', 'Guest 3 First Name': 'g3_first', 'Guest 3 Last Name': 'g3_last', 'Guest 3 Meal': 'meal_g3',
+  'Guest 4 Title': 'g4_title', 'Guest 4 First Name': 'g4_first', 'Guest 4 Last Name': 'g4_last', 'Guest 4 Meal': 'meal_g4',
+  'Dietary Restrictions': 'dietary'
+};
+
+function getSheet_() {
   var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = ss.getSheetByName(SHEET_NAME);
-
-  // Create the tab if it doesn't exist
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
   }
-
-  // Add headers if sheet is empty
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow([
-      'Timestamp', 'First Name', 'Last Name',
-      'Partner First Name', 'Partner Last Name', 'Email',
-      'Welcome Aperitivo (Fri Nov 6)', 'Wedding Day (Sat Nov 7)',
-      'Cannot Attend', 'Dietary Restrictions'
-    ]);
+    sheet.appendRow(HEADERS);
+  }
+  return sheet;
+}
+
+function findRowByHouseholdId_(sheet, householdId) {
+  var data = sheet.getDataRange().getValues();
+  var hhCol = HEADERS.indexOf('Household ID');
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][hhCol]) === String(householdId)) {
+      return { rowNum: i + 1, values: data[i] };
+    }
+  }
+  return null;
+}
+
+// ── GET: JSONP lookup — "has this household already submitted?" ──
+function doGet(e) {
+  var householdId = e.parameter.householdId;
+  var callback = e.parameter.callback || 'callback';
+  var result = null;
+
+  if (householdId) {
+    var sheet = getSheet_();
+    var existing = findRowByHouseholdId_(sheet, householdId);
+    if (existing) {
+      result = {};
+      HEADERS.forEach(function(h, idx) {
+        var key = FIELD_MAP[h];
+        if (key) result[key] = existing.values[idx];
+      });
+    }
   }
 
+  var body = callback + '(' + JSON.stringify(result) + ');';
+  return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
+
+// ── POST: create or update (upsert) a household's RSVP ──
+function doPost(e) {
+  var sheet = getSheet_();
   var data = JSON.parse(e.postData.contents);
 
-  // ── Save to sheet ──────────────────────────
-  sheet.appendRow([
-    new Date(),
-    data.first_name,
-    data.last_name,
-    data.partner_first_name,
-    data.partner_last_name,
-    data.email,
-    data.welcome_cocktail,
-    data.wedding_day,
-    data.cannot_attend,
-    data.dietary
-  ]);
+  var newRow = HEADERS.map(function(h) {
+    if (h === 'Timestamp') return new Date();
+    var key = FIELD_MAP[h];
+    return key && data[key] != null ? data[key] : '';
+  });
 
-  // ── Build attending summary ────────────────
+  var existing = findRowByHouseholdId_(sheet, data.household_id);
+  if (existing) {
+    sheet.getRange(existing.rowNum, 1, 1, newRow.length).setValues([newRow]);
+  } else {
+    sheet.appendRow(newRow);
+  }
+
+  sendConfirmationEmail_(data);
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: 'ok' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function guestList_(data) {
+  var people = [];
+  people.push({ title: data.title, first: data.first_name, last: data.last_name, meal: data.meal_self });
+  ['2', '3', '4'].forEach(function(n) {
+    var first = data['g' + n + '_first'];
+    var last = data['g' + n + '_last'];
+    if (first || last) {
+      people.push({ title: data['g' + n + '_title'], first: first, last: last, meal: data['meal_g' + n] });
+    }
+  });
+  return people;
+}
+
+function fullName_(p) {
+  return [p.title, p.first, p.last].filter(function(x) { return x; }).join(' ');
+}
+
+function sendConfirmationEmail_(data) {
+  var people = guestList_(data);
+  var attending = data.wedding_day === 'Yes' || data.welcome_cocktail === 'Yes';
+
+  // ── Attending events summary ──
   var events = [];
   if (data.welcome_cocktail === 'Yes') events.push('Welcome Aperitivo &mdash; Friday, November 6th');
-  if (data.wedding_day      === 'Yes') events.push('Wedding Ceremony &amp; Reception &mdash; Saturday, November 7th');
+  if (data.wedding_day === 'Yes') events.push('Wedding Ceremony &amp; Reception &mdash; Saturday, November 7th');
 
-  var attendingHtml = '';
-  if (data.cannot_attend === 'Yes') {
+  var attendingHtml;
+  if (data.cannot_attend === 'Yes' && !attending) {
     attendingHtml = '<p style="font-family: Georgia, serif; font-size: 15px; color: #8a7a7e; line-height: 1.8; margin: 0;">Unfortunately unable to attend.</p>';
   } else {
     attendingHtml = events.map(function(ev) {
@@ -55,15 +137,31 @@ function doPost(e) {
     }).join('');
   }
 
-  var partnerHtml = (data.partner_first_name || data.partner_last_name)
-    ? '<p style="font-family: Georgia, serif; font-size: 14px; color: #8a7a7e; line-height: 1.7; margin: 16px 0 0 0;"><strong style="color: #2a2318; font-weight: 600;">Attending with:</strong> ' + data.partner_first_name + ' ' + data.partner_last_name + '</p>'
-    : '';
+  // ── Party roster ──
+  var partyHtml = '';
+  if (people.length > 1) {
+    partyHtml = '<p style="font-family: Georgia, serif; font-size: 14px; color: #8a7a7e; line-height: 1.7; margin: 16px 0 0 0;"><strong style="color: #2a2318; font-weight: 600;">Attending with:</strong> ' +
+      people.slice(1).map(fullName_).join(', ') + '</p>';
+  }
+
+  // ── Meal choices (only relevant if attending Saturday) ──
+  var mealHtml = '';
+  if (data.wedding_day === 'Yes') {
+    var mealLines = people
+      .filter(function(p) { return p.meal; })
+      .map(function(p) {
+        return '<p style="font-family: Georgia, serif; font-size: 14px; color: #8a7a7e; line-height: 1.6; margin: 0 0 4px 0;">' + fullName_(p) + ' &mdash; <strong style="color:#2a2318; font-weight:600;">' + p.meal + '</strong></p>';
+      }).join('');
+    if (mealLines) {
+      mealHtml = '<p style="font-family: Georgia, serif; font-size: 14px; color: #8a7a7e; line-height: 1.7; margin: 16px 0 6px 0;"><strong style="color: #2a2318; font-weight: 600;">Saturday night dinner:</strong></p>' + mealLines;
+    }
+  }
 
   var dietaryHtml = data.dietary
     ? '<p style="font-family: Georgia, serif; font-size: 14px; color: #8a7a7e; line-height: 1.7; margin: 16px 0 0 0;"><strong style="color: #2a2318; font-weight: 600;">Dietary notes:</strong> ' + data.dietary + '</p>'
     : '';
 
-  var guestName = data.first_name;
+  var salutation = 'Dear ' + [data.title, data.last_name].filter(function(x) { return x; }).join(' ') + ',';
 
   // ── HTML email ─────────────────────────────
   var html = '<!DOCTYPE html>' +
@@ -95,7 +193,7 @@ function doPost(e) {
 '                </td></tr>' +
 
 '                <tr><td style="padding-bottom: 16px;">' +
-'                  <p style="font-family: Georgia, serif; font-size: 16px; color: #2a2318; line-height: 1.8; margin: 0;">Hi ' + guestName + ',</p>' +
+'                  <p style="font-family: Georgia, serif; font-size: 16px; color: #2a2318; line-height: 1.8; margin: 0;">' + salutation + '</p>' +
 '                </td></tr>' +
 
 '                <tr><td style="padding-bottom: 28px;">' +
@@ -107,14 +205,15 @@ function doPost(e) {
 '                    <tr><td style="padding: 20px 24px; background-color: #f5ede8; border-left: 2px solid #2E9166;">' +
 '                      <p style="font-family: \'Barlow\', Arial, sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #2E9166; margin: 0 0 14px 0;">Your selections</p>' +
                        attendingHtml +
-                       partnerHtml +
+                       partyHtml +
+                       mealHtml +
                        dietaryHtml +
 '                    </td></tr>' +
 '                  </table>' +
 '                </td></tr>' +
 
 '                <tr><td style="padding-bottom: 12px;">' +
-'                  <p style="font-family: Georgia, serif; font-size: 15px; color: #8a7a7e; line-height: 1.8; margin: 0;">If anything looks wrong or you need to make a change, just reply to this email and we\'ll sort it out.</p>' +
+'                  <p style="font-family: Georgia, serif; font-size: 15px; color: #8a7a7e; line-height: 1.8; margin: 0;">If anything looks wrong or you need to make a change, just reply to this email, or visit the site again and re-submit &mdash; it\'ll update your existing RSVP.</p>' +
 '                </td></tr>' +
 
 '                <tr><td style="padding-bottom: 28px;">' +
@@ -143,15 +242,9 @@ function doPost(e) {
 '</body>' +
 '</html>';
 
-  // ── Send confirmation email ────────────────
   MailApp.sendEmail({
-    to:       data.email,
-    subject:  'Your RSVP — Susan & Alexandre, November 7th',
+    to: data.email,
+    subject: 'Your RSVP — Susan & Alexandre, November 7th',
     htmlBody: html
   });
-
-  // ── Return success ─────────────────────────
-  return ContentService
-    .createTextOutput(JSON.stringify({ status: 'ok' }))
-    .setMimeType(ContentService.MimeType.JSON);
 }
