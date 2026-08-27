@@ -9,9 +9,9 @@ var SHEET_NAME = 'RSVPs';
 var HEADERS = [
   'Timestamp', 'Household ID', 'Title', 'First Name', 'Last Name', 'Email',
   'Welcome Aperitivo (Fri Nov 6)', 'Wedding Day (Sat Nov 7)', 'Cannot Attend', 'Self Meal',
-  'Guest 2 Title', 'Guest 2 First Name', 'Guest 2 Last Name', 'Guest 2 Meal',
-  'Guest 3 Title', 'Guest 3 First Name', 'Guest 3 Last Name', 'Guest 3 Meal',
-  'Guest 4 Title', 'Guest 4 First Name', 'Guest 4 Last Name', 'Guest 4 Meal',
+  'Guest 2 Title', 'Guest 2 First Name', 'Guest 2 Last Name', 'Guest 2 Email', 'Guest 2 Meal',
+  'Guest 3 Title', 'Guest 3 First Name', 'Guest 3 Last Name', 'Guest 3 Email', 'Guest 3 Meal',
+  'Guest 4 Title', 'Guest 4 First Name', 'Guest 4 Last Name', 'Guest 4 Email', 'Guest 4 Meal',
   'Dietary Restrictions'
 ];
 
@@ -26,9 +26,9 @@ var FIELD_MAP = {
   'Wedding Day (Sat Nov 7)': 'wedding_day',
   'Cannot Attend': 'cannot_attend',
   'Self Meal': 'meal_self',
-  'Guest 2 Title': 'g2_title', 'Guest 2 First Name': 'g2_first', 'Guest 2 Last Name': 'g2_last', 'Guest 2 Meal': 'meal_g2',
-  'Guest 3 Title': 'g3_title', 'Guest 3 First Name': 'g3_first', 'Guest 3 Last Name': 'g3_last', 'Guest 3 Meal': 'meal_g3',
-  'Guest 4 Title': 'g4_title', 'Guest 4 First Name': 'g4_first', 'Guest 4 Last Name': 'g4_last', 'Guest 4 Meal': 'meal_g4',
+  'Guest 2 Title': 'g2_title', 'Guest 2 First Name': 'g2_first', 'Guest 2 Last Name': 'g2_last', 'Guest 2 Email': 'g2_email', 'Guest 2 Meal': 'meal_g2',
+  'Guest 3 Title': 'g3_title', 'Guest 3 First Name': 'g3_first', 'Guest 3 Last Name': 'g3_last', 'Guest 3 Email': 'g3_email', 'Guest 3 Meal': 'meal_g3',
+  'Guest 4 Title': 'g4_title', 'Guest 4 First Name': 'g4_first', 'Guest 4 Last Name': 'g4_last', 'Guest 4 Email': 'g4_email', 'Guest 4 Meal': 'meal_g4',
   'Dietary Restrictions': 'dietary'
 };
 

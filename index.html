@@ -699,12 +699,28 @@
   }
 
   /* ── ADDITIONAL GUEST ROWS ── */
+  .guest-block {
+    margin-bottom: 1.8rem;
+    padding-bottom: 1.8rem;
+    border-bottom: 1px solid rgba(196,176,181,0.2);
+  }
+
+  .guest-block:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
   .guest-row {
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
     gap: 0.6rem;
-    margin-bottom: 1.1rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .guest-email-field {
+    max-width: 320px;
   }
 
   .guest-title {
@@ -1475,7 +1491,7 @@
     <p class="rsvp-greeting" id="rsvpGreeting" style="display:none;"></p>
     <p class="rsvp-update-note" id="rsvpUpdateNote" style="display:none;">Looks like someone in your household already submitted an RSVP — we've pre-filled your responses below. Feel free to make changes and resubmit.</p>
 
-    <p class="rsvp-intro" id="rsvpIntro" style="display:none;">If you already know whether you can make it, please let us know by filling out the form below. No pressure if you're still figuring it out — this just helps us plan!</p>
+    <p class="rsvp-intro" id="rsvpIntro" style="display:none;">Please RSVP below to confirm your attendance for the weekend. We're so looking forward to celebrating with you in Palm Beach.</p>
 
     <form class="rsvp-form" id="rsvpForm" style="display:none;" onsubmit="handleSubmit(event)">
 
@@ -1781,13 +1797,19 @@
     for (var i = 0; i < totalSlots; i++) {
       var person = others[i] || { t: '', f: '', l: '' };
       var slotNum = i + 2;
-      var row = document.createElement('div');
-      row.className = 'guest-row';
-      row.innerHTML =
-        '<span class="guest-title" id="gTitle' + slotNum + '">' + escapeHtml(person.t) + '</span>' +
-        '<input type="text" class="guest-input" id="gFirst' + slotNum + '" placeholder="First Name" value="' + escapeHtml(person.f) + '" oninput="updateMealLabel(' + slotNum + ')">' +
-        '<input type="text" class="guest-input" id="gLast' + slotNum + '" placeholder="Last Name" value="' + escapeHtml(person.l) + '" oninput="updateMealLabel(' + slotNum + ')">';
-      container.appendChild(row);
+      var block = document.createElement('div');
+      block.className = 'guest-block';
+      block.innerHTML =
+        '<div class="guest-row">' +
+          '<span class="guest-title" id="gTitle' + slotNum + '">' + escapeHtml(person.t) + '</span>' +
+          '<input type="text" class="guest-input" id="gFirst' + slotNum + '" placeholder="First Name" value="' + escapeHtml(person.f) + '" oninput="updateMealLabel(' + slotNum + ')">' +
+          '<input type="text" class="guest-input" id="gLast' + slotNum + '" placeholder="Last Name" value="' + escapeHtml(person.l) + '" oninput="updateMealLabel(' + slotNum + ')">' +
+        '</div>' +
+        '<div class="form-field guest-email-field">' +
+          '<label>Email <span style="text-transform:none; font-style:italic; letter-spacing:0; font-family:\'Lora\',serif; font-size:0.85rem; color:var(--light-mid)">(optional)</span></label>' +
+          '<input type="email" id="gEmail' + slotNum + '" placeholder="their@email.com">' +
+        '</div>';
+      container.appendChild(block);
     }
 
     document.getElementById('additionalGuestsGroup').style.display = totalSlots > 0 ? 'block' : 'none';
@@ -1883,6 +1905,7 @@
     for (var i = 2; i <= currentHousehold.max; i++) {
       if (data['g' + i + '_first']) document.getElementById('gFirst' + i).value = data['g' + i + '_first'];
       if (data['g' + i + '_last']) document.getElementById('gLast' + i).value = data['g' + i + '_last'];
+      if (data['g' + i + '_email']) document.getElementById('gEmail' + i).value = data['g' + i + '_email'];
       updateMealLabel(i);
     }
 
@@ -1924,6 +1947,7 @@
       payload['g' + i + '_title'] = document.getElementById('gTitle' + i).textContent;
       payload['g' + i + '_first'] = document.getElementById('gFirst' + i).value;
       payload['g' + i + '_last']  = document.getElementById('gLast' + i).value;
+      payload['g' + i + '_email'] = document.getElementById('gEmail' + i).value;
       payload['meal_g' + i]       = getMealValue('g' + i);
     }
 
