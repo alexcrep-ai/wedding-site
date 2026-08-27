@@ -3,7 +3,7 @@
 //  Replace your entire script with this.
 // ─────────────────────────────────────────────
 
-var SPREADSHEET_ID = '1oyAJ_UZHmtK3QmVRj5AgZA0JSEzHpv4s7umcgRHGSk8';
+var SPREADSHEET_ID = '1ZxCp6AwzImanv1MuKSbrOHYUEUczwnkuxIJDi4KT6oI';
 var SHEET_NAME = 'RSVPs';
 
 var HEADERS = [
