@@ -1272,14 +1272,20 @@
       <div class="agenda-day-header">
         <div class="agenda-day-info">
           <div class="agenda-day-name">Friday, November 6th</div>
-          <div class="agenda-day-title">Welcome Aperitivo</div>
+          <div class="agenda-day-title">Welcome Aperitivo on the rooftop, at The Ben, West Palm</div>
         </div>
       </div>
       <div class="agenda-events">
         <div class="agenda-event">
-          <div class="agenda-event-time">7:00 PM</div>
+          <div class="agenda-event-time">7:00 PM – 9:00 PM</div>
           <div class="agenda-event-details">
-            <div class="agenda-event-desc">Join us for cocktails, as we kick off the weekend!</div>
+            <div class="agenda-event-desc">Join us for cocktails and light bites, as we kick off the weekend!</div>
+          </div>
+        </div>
+        <div class="agenda-event">
+          <div class="agenda-event-time"></div>
+          <div class="agenda-event-details">
+            <div class="agenda-event-name" style="font-style:italic; font-size:0.88rem;">The Ben, West Palm Beach · 251 N Narcissus Ave, West Palm Beach, FL 33401 (8th Floor)</div>
           </div>
         </div>
       </div>
@@ -1297,7 +1303,7 @@
       </div>
       <div class="agenda-events">
         <div class="agenda-event">
-          <div class="agenda-event-time">5:00 PM</div>
+          <div class="agenda-event-time">5:00 PM – 11:00 PM</div>
           <div class="agenda-event-details">
             <div class="agenda-event-desc">Our wedding ceremony will begin at 5pm, followed by cocktail hour, dinner and dancing. Please be seated by 4:45pm.</div>
           </div>
@@ -1306,6 +1312,18 @@
           <div class="agenda-event-time"></div>
           <div class="agenda-event-details">
             <div class="agenda-event-name" style="font-style:italic; font-size:0.88rem;">The Colony Palm Beach · 155 Hammon Avenue, Palm Beach, FL 33480</div>
+          </div>
+        </div>
+        <div class="agenda-event">
+          <div class="agenda-event-time">11:00 PM – 12:00 AM</div>
+          <div class="agenda-event-details">
+            <div class="agenda-event-desc">After Party</div>
+          </div>
+        </div>
+        <div class="agenda-event">
+          <div class="agenda-event-time">Midnight – Late</div>
+          <div class="agenda-event-details">
+            <div class="agenda-event-desc"><strong>Late Night at Cucina</strong><br>The celebration continues at Cucina — Palm Beach's iconic late-night spot for dancing and popping a few more bottles. Transportation to and from the venue will be provided.</div>
           </div>
         </div>
       </div>
@@ -1418,8 +1436,8 @@
 
     <div class="attire-card">
       <div class="attire-event">Friday · Welcome Cocktail</div>
-      <div class="attire-code">Palm Royale — Palm Beach Chic</div>
-      <div class="attire-desc">Palm Royale dress code is a 1960s-inspired "Palm Beach chic" aesthetic, featuring bold prints &amp; vibrant colours.</div>
+      <div class="attire-code">Palm Beach Cocktail Attire</div>
+      <div class="attire-desc">Think Palm Royale — cocktail attire with a resort twist. Ladies, embrace vibrant hues, playful prints, and statement accessories. Gentlemen, sport coats, linen, and crisp shirting.</div>
     </div>
 
     <div class="attire-card">
@@ -1467,7 +1485,7 @@
 
     <!-- NAME LOOKUP GATE -->
     <div id="rsvpLookup">
-      <p class="rsvp-intro">Let's find your invitation — enter your name below to get started.</p>
+      <p class="rsvp-intro">Please enter the first and last name of one member of your party below. If you're responding for you and a guest (or your family), you'll be able to RSVP for your entire group.</p>
       <div class="form-row">
         <div class="form-field">
           <label>First Name</label>
@@ -1516,7 +1534,7 @@
             <input type="checkbox" id="welcomeCocktail"> Welcome Cocktail — Friday, Nov 6th
           </label>
           <label class="checkbox-label">
-            <input type="checkbox" id="weddingDay"> Wedding Day — Saturday, Nov 7th
+            <input type="checkbox" id="weddingDay"> Wedding Ceremony — Nov 7th
           </label>
           <label class="checkbox-label">
             <input type="checkbox" id="cannotAttend"> Cannot Attend
@@ -1525,7 +1543,7 @@
       </div>
 
       <div class="form-group" id="mealGroup" style="display:none;">
-        <div class="form-group-title">Saturday Night Dinner</div>
+        <div class="form-group-title">Saturday Evening Dinner</div>
         <p style="font-family:'Barlow',sans-serif; font-size:0.78rem; color:var(--light-mid); margin-bottom:1rem; letter-spacing:0.03em;">Please select a meal for each guest attending Saturday</p>
         <div id="mealContainer"></div>
       </div>
@@ -1837,7 +1855,7 @@
       '<div class="meal-person-name" id="mealName_' + key + '">' + escapeHtml(label) + '</div>' +
       '<div class="meal-options">' +
         '<label class="radio-label"><input type="radio" name="meal_' + key + '" value="Fish"> Fish</label>' +
-        '<label class="radio-label"><input type="radio" name="meal_' + key + '" value="Meat"> Meat</label>' +
+        '<label class="radio-label"><input type="radio" name="meal_' + key + '" value="Beef"> Beef</label>' +
       '</div>';
     return div;
   }
