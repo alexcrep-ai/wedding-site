@@ -1485,10 +1485,10 @@
       <div class="attire-code">Palm Beach Cocktail Attire</div>
       <div class="attire-desc">Think Palm Royale — cocktail attire with a resort twist. Ladies, embrace vibrant hues, playful prints, and statement accessories. Gentlemen, sport coats, linen, and crisp shirting.</div>
 
-      <button type="button" class="inspo-toggle" id="inspoToggle" onclick="toggleInspo()">
-        <span class="inspo-toggle-icon">+</span> View Outfit Inspiration
+      <button type="button" class="inspo-toggle" id="inspoToggleWomen" onclick="toggleInspo('Women')">
+        <span class="inspo-toggle-icon">+</span> View Women's Outfit Inspiration
       </button>
-      <div class="inspo-mosaic-wrap" id="inspoMosaicWrap">
+      <div class="inspo-mosaic-wrap" id="inspoMosaicWrapWomen">
         <div class="photo-mosaic">
           <div class="photo-mosaic-item"><img src="attire-inspo/attire-inspo-1.jpg" alt="Outfit inspiration"></div>
           <div class="photo-mosaic-item"><img src="attire-inspo/attire-inspo-2.jpg" alt="Outfit inspiration"></div>
@@ -1506,6 +1506,33 @@
           <div class="photo-mosaic-item"><img src="attire-inspo/attire-inspo-14.jpg" alt="Outfit inspiration"></div>
           <div class="photo-mosaic-item"><img src="attire-inspo/attire-inspo-15.jpg" alt="Outfit inspiration"></div>
           <div class="photo-mosaic-item"><img src="attire-inspo/attire-inspo-16.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo/attire-inspo-17.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo/attire-inspo-18.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo/attire-inspo-19.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo/attire-inspo-20.jpg" alt="Outfit inspiration"></div>
+        </div>
+      </div>
+
+      <button type="button" class="inspo-toggle" id="inspoToggleMen" onclick="toggleInspo('Men')">
+        <span class="inspo-toggle-icon">+</span> View Men's Outfit Inspiration
+      </button>
+      <div class="inspo-mosaic-wrap" id="inspoMosaicWrapMen">
+        <div class="photo-mosaic">
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-1.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-2.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-3.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-4.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-5.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-6.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-7.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-8.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-9.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-10.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-11.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-12.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-13.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-14.jpg" alt="Outfit inspiration"></div>
+          <div class="photo-mosaic-item"><img src="attire-inspo-men/attire-inspo-men-15.jpg" alt="Outfit inspiration"></div>
         </div>
       </div>
     </div>
@@ -1689,14 +1716,15 @@
   }
 
   // Attire outfit inspiration toggle
-  function toggleInspo() {
-    var btn = document.getElementById('inspoToggle');
-    var wrap = document.getElementById('inspoMosaicWrap');
+  function toggleInspo(which) {
+    var btn = document.getElementById('inspoToggle' + which);
+    var wrap = document.getElementById('inspoMosaicWrap' + which);
+    var label = which === 'Men' ? "Men's" : "Women's";
     var isOpen = wrap.classList.toggle('open');
     btn.classList.toggle('open', isOpen);
     btn.innerHTML = isOpen
-      ? '<span class="inspo-toggle-icon">+</span> Hide Outfit Inspiration'
-      : '<span class="inspo-toggle-icon">+</span> View Outfit Inspiration';
+      ? '<span class="inspo-toggle-icon">+</span> Hide ' + label + ' Outfit Inspiration'
+      : '<span class="inspo-toggle-icon">+</span> View ' + label + ' Outfit Inspiration';
   }
 
   // Parallax hero image
