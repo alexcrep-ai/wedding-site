@@ -721,6 +721,19 @@
     max-width: 320px;
   }
 
+  .guest-declined-label {
+    margin-top: 0.7rem;
+  }
+
+  .guest-block.declined {
+    opacity: 0.45;
+  }
+
+  .guest-block.declined .guest-input,
+  .guest-block.declined .guest-email-field input {
+    pointer-events: none;
+  }
+
   .guest-title {
     font-family: 'Lora', serif;
     font-size: 0.95rem;
@@ -1930,6 +1943,7 @@
       var slotNum = i + 2;
       var block = document.createElement('div');
       block.className = 'guest-block';
+      block.id = 'gBlock' + slotNum;
       block.innerHTML =
         '<div class="guest-row">' +
           '<span class="guest-title" id="gTitle' + slotNum + '">' + escapeHtml(person.t) + '</span>' +
@@ -1939,7 +1953,10 @@
         '<div class="form-field guest-email-field">' +
           '<label>Email <span style="text-transform:none; font-style:italic; letter-spacing:0; font-family:\'Lora\',serif; font-size:0.85rem; color:var(--light-mid)">(optional)</span></label>' +
           '<input type="email" id="gEmail' + slotNum + '" placeholder="their@email.com">' +
-        '</div>';
+        '</div>' +
+        '<label class="checkbox-label guest-declined-label">' +
+          '<input type="checkbox" id="gDeclined' + slotNum + '" onchange="toggleGuestAttending(' + slotNum + ')"> Not attending' +
+        '</label>';
       container.appendChild(block);
     }
 
@@ -1961,6 +1978,7 @@
   function buildMealRow(key, label) {
     var div = document.createElement('div');
     div.className = 'meal-row';
+    div.id = 'mealRow_' + key;
     div.innerHTML =
       '<div class="meal-person-name" id="mealName_' + key + '">' + escapeHtml(label) + '</div>' +
       '<div class="meal-options">' +
@@ -2003,6 +2021,29 @@
     if (el) el.checked = true;
   }
 
+  // Marks an additional guest as not attending (or reverses it). Their name/meal
+  // simply aren't sent on submit — no schema change needed on the sheet.
+  function setGuestDeclined(slotNum, declined) {
+    var block = document.getElementById('gBlock' + slotNum);
+    var firstEl = document.getElementById('gFirst' + slotNum);
+    var lastEl = document.getElementById('gLast' + slotNum);
+    var emailEl = document.getElementById('gEmail' + slotNum);
+    var checkbox = document.getElementById('gDeclined' + slotNum);
+    var mealRow = document.getElementById('mealRow_g' + slotNum);
+
+    if (block) block.classList.toggle('declined', declined);
+    if (firstEl) firstEl.disabled = declined;
+    if (lastEl) lastEl.disabled = declined;
+    if (emailEl) emailEl.disabled = declined;
+    if (checkbox) checkbox.checked = declined;
+    if (mealRow) mealRow.style.display = declined ? 'none' : '';
+  }
+
+  function toggleGuestAttending(slotNum) {
+    var checkbox = document.getElementById('gDeclined' + slotNum);
+    setGuestDeclined(slotNum, checkbox.checked);
+  }
+
   // ── RSVP: live household lookup (JSONP) ────────
   function checkHouseholdStatus(householdId) {
     var callbackName = 'hhCallback_' + Date.now();
@@ -2033,11 +2074,23 @@
     document.getElementById('cannotAttend').checked = data.cannot_attend === 'Yes';
     document.getElementById('dietary').value = data.dietary || '';
 
+    var others = currentHousehold.members.filter(function(m, idx) { return idx !== currentSelfIndex; });
     for (var i = 2; i <= currentHousehold.max; i++) {
-      if (data['g' + i + '_first']) document.getElementById('gFirst' + i).value = data['g' + i + '_first'];
-      if (data['g' + i + '_last']) document.getElementById('gLast' + i).value = data['g' + i + '_last'];
-      if (data['g' + i + '_email']) document.getElementById('gEmail' + i).value = data['g' + i + '_email'];
-      updateMealLabel(i);
+      var savedFirst = data['g' + i + '_first'];
+      var savedLast = data['g' + i + '_last'];
+      var staticPerson = others[i - 2];
+      var hadStaticName = staticPerson && (staticPerson.f || staticPerson.l);
+
+      if (!savedFirst && !savedLast && hadStaticName) {
+        // Blank in a previous submission where a name was originally known
+        // means this guest was marked not attending — restore that state.
+        setGuestDeclined(i, true);
+      } else {
+        if (savedFirst) document.getElementById('gFirst' + i).value = savedFirst;
+        if (savedLast) document.getElementById('gLast' + i).value = savedLast;
+        if (data['g' + i + '_email']) document.getElementById('gEmail' + i).value = data['g' + i + '_email'];
+        updateMealLabel(i);
+      }
     }
 
     setMealRadio('self', data.meal_self);
@@ -2075,11 +2128,12 @@
     };
 
     for (var i = 2; i <= currentHousehold.max; i++) {
-      payload['g' + i + '_title'] = document.getElementById('gTitle' + i).textContent;
-      payload['g' + i + '_first'] = document.getElementById('gFirst' + i).value;
-      payload['g' + i + '_last']  = document.getElementById('gLast' + i).value;
-      payload['g' + i + '_email'] = document.getElementById('gEmail' + i).value;
-      payload['meal_g' + i]       = getMealValue('g' + i);
+      var declined = document.getElementById('gDeclined' + i).checked;
+      payload['g' + i + '_title'] = declined ? '' : document.getElementById('gTitle' + i).textContent;
+      payload['g' + i + '_first'] = declined ? '' : document.getElementById('gFirst' + i).value;
+      payload['g' + i + '_last']  = declined ? '' : document.getElementById('gLast' + i).value;
+      payload['g' + i + '_email'] = declined ? '' : document.getElementById('gEmail' + i).value;
+      payload['meal_g' + i]       = declined ? '' : getMealValue('g' + i);
     }
 
     fetch(SCRIPT_URL, {
