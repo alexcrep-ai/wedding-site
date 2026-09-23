@@ -1883,13 +1883,16 @@
     {"id":"rizzo-1","max":1,"members":[{"t":"Rev.","f":"A.J.","l":"Rizzo"}]},
     {"id":"memolo-1","max":2,"members":[{"t":"Dr.","f":"Mark","l":"Memolo"},{"t":"Mrs.","f":"Susan","l":"Memolo"}]},
     {"id":"karam-3","max":2,"members":[{"t":"Mr.","f":"Thomas","l":"Karam Jr."},{"t":"Mrs.","f":"Julia","l":"Karam"}]},
-    {"id":"hosts-1","max":2,"members":[{"t":"Mr.","f":"Alexandre","l":"Crépault"},{"t":"Mrs.","f":"Susan","l":"Knowles"}]}
+    {"id":"hosts-1","max":2,"members":[{"t":"Mr.","f":"Alexandre","l":"Crépault"},{"t":"Mrs.","f":"Susan","l":"Knowles"}]},
+    {"id":"kelleher-1","max":2,"members":[{"t":"Mr.","f":"Todd","l":"Kelleher"},{"t":"Dr.","f":"Ernest","l":"Vina"}]},
+    {"id":"bolduc-1","max":2,"members":[{"t":"Mr.","f":"Jean-Phillipe","l":"Bolduc"},{"t":"Mrs.","f":"Melissa","l":"Desmarais"}]}
   ];
 
   function normalizeName(s) {
     return (s || '')
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       .replace(/[.,]/g, '')
+      .replace(/-/g, ' ')
       .trim()
       .replace(/\s+/g, ' ')
       .toLowerCase();
