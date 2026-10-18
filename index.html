@@ -1604,12 +1604,19 @@
 <!-- RSVP -->
 <section id="rsvp">
   <div class="page-inner fade-in">
-    <p class="page-subtitle">Let us know</p>
+    <p class="page-subtitle">Responses closed</p>
     <h2 class="page-title">RS<em>VP</em></h2>
     <div class="divider-line"></div>
 
+    <!-- RSVP CLOSED NOTICE — to reopen: delete this block, restore the "Let us know" subtitle,
+         and remove style="display:none;" from #rsvpLookup below -->
+    <div id="rsvpClosed">
+      <p class="rsvp-intro">Our RSVP list is now closed. Thank you so much to everyone who has responded — we are so grateful, and can't wait to celebrate with you in Palm Beach.</p>
+      <p class="rsvp-intro">If you have any questions about your response, please reach out to us directly at <a href="mailto:a.crepault@gmail.com" style="color:var(--terracotta);">a.crepault@gmail.com</a>.</p>
+    </div>
+
     <!-- NAME LOOKUP GATE -->
-    <div id="rsvpLookup">
+    <div id="rsvpLookup" style="display:none;">
       <p class="rsvp-intro">Please enter the first and last name of one member of your party below. If you're responding for you and a guest (or your family), you'll be able to RSVP for your entire group.</p>
       <div class="form-row">
         <div class="form-field">
